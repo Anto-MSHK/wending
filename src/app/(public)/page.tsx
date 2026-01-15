@@ -5,6 +5,8 @@ import Household from '@/models/Household';
 import Guest from '@/models/Guest';
 import { HeroSection } from '@/components/layout/HeroSection';
 import { LoveStorySection } from '@/components/sections/LoveStorySection';
+import { EventDetails } from '@/components/layout/EventDetails';
+import { CountdownTimer } from '@/components/layout/CountdownTimer';
 
 /**
  * Landing Page - Server Component
@@ -45,6 +47,12 @@ export default async function LandingPage() {
         <main lang="ru">
             {/* AC3, AC5: Hero with guest name, themed design */}
             <HeroSection guestName={displayName} />
+
+            {/* AC1, AC2, AC3: Event Details Component */}
+            <EventDetails />
+
+            {/* AC5: Countdown Timer */}
+            <CountdownTimer />
 
             {/* AC4: Love Story section */}
             <LoveStorySection />
