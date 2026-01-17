@@ -4,6 +4,7 @@ import dbConnect from '@/lib/db';
 import Household from '@/models/Household';
 import Guest from '@/models/Guest';
 import { HeroSection } from '@/components/layout/HeroSection';
+import { PersonalGreeting } from '@/components/layout/PersonalGreeting';
 import { LoveStorySection } from '@/components/sections/LoveStorySection';
 import { EventDetails } from '@/components/layout/EventDetails';
 import { CountdownTimer } from '@/components/layout/CountdownTimer';
@@ -41,12 +42,18 @@ export default async function LandingPage() {
     }
 
     // Display Name Logic
-    const displayName = guest.guestName;
+    let displayName = guest.guestName;
+    if (guest.isHeadOfHousehold && household?.householdName) {
+        displayName = household.householdName;
+    }
 
     return (
         <main lang="ru">
-            {/* AC3, AC5: Hero with guest name, themed design */}
-            <HeroSection guestName={displayName} />
+            {/* Hero with couple photo, date, and names */}
+            <HeroSection />
+
+            {/* Personalized greeting below hero */}
+            <PersonalGreeting guestName={displayName} />
 
             {/* AC1, AC2, AC3: Event Details Component */}
             <EventDetails />
