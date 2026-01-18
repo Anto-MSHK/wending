@@ -14,7 +14,7 @@ export function HeroSection() {
                     src="/images/hero-photo.jpg"
                     alt="Антон и Ксения"
                     fill
-                    className="object-cover object-center animate-fade-in-image"
+                    className="object-cover object-[center_35%] animate-fade-in-image"
                     priority
                     sizes="100vw"
                 />
@@ -27,7 +27,7 @@ export function HeroSection() {
                 {/* Soft white diffused background */}
                 <div className="absolute -inset-1 md:-inset-2 lg:-inset-4 bg-white/80 rounded-full blur-xl" />
                 <div
-                    className="relative text-6xl md:text-7xl lg:text-8xl xl:text-9xl pl-4 overflow-visible"
+                    className="relative text-6xl md:text-7xl lg:text-8xl xl:text-9xl overflow-visible"
                     style={{
                         fontFamily: '"Dynalight", cursive',
                         fontWeight: 400,
@@ -76,7 +76,7 @@ export function HeroSection() {
             <div className="absolute bottom-0 left-0 right-0 h-[45vh] bg-gradient-to-t from-white via-white/90 to-transparent z-10" />
 
             {/* Names Image - Bottom Center */}
-            <div className="absolute bottom-2 md:bottom-4 left-1/2 -translate-x-1/2 z-20 w-[320px] md:w-[480px] lg:w-[600px] animate-fade-in-scale">
+            <div className="absolute bottom-2 md:bottom-4 left-1/2 -translate-x-1/2 z-20 w-[280px] md:w-[350px] lg:w-[400px] xl:w-[400px] max-w-[600px] animate-fade-in-scale">
                 <Image
                     src="/images/names.png"
                     alt="Антон и Ксения"
@@ -87,17 +87,6 @@ export function HeroSection() {
                 />
             </div>
 
-            {/* Decorative scroll indicator */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 hidden md:block motion-safe:animate-bounce">
-                <svg
-                    className="w-6 h-6 text-charcoal/50"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                </svg>
-            </div>
         </section>
     );
 }

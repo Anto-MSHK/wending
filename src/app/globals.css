@@ -11,9 +11,24 @@
   --font-family-cormorant: 'Cormorant Garamond', serif;
   --font-family-inter: 'Inter', sans-serif;
   --font-family-dynalight: 'Dynalight', cursive;
+  --font-family-great-vibes: 'Great Vibes', cursive;
+  --font-family-nunito: 'Nunito', sans-serif;
 
   /* Custom Animations */
   --animate-fade-in: fade-in 0.6s ease-out;
+}
+
+/* Explicit fallback utilities to ensure fonts apply */
+.font-great-vibes {
+  font-family: 'Great Vibes', cursive;
+}
+
+.font-nunito {
+  font-family: 'Nunito', sans-serif;
+}
+
+.font-cormorant {
+  font-family: 'Cormorant Garamond', serif;
 }
 
 @keyframes fade-in {

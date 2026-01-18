@@ -43,8 +43,14 @@ export default async function LandingPage() {
 
     // Display Name Logic
     let displayName = guest.guestName;
+    let isFamily = false;
+
+    // Check if we should display the household name (e.g. "Семья Ивановых")
+    // This happens if the guest is the Head of Household AND a household name is set
     if (guest.isHeadOfHousehold && household?.householdName) {
         displayName = household.householdName;
+        // Typically household names imply a family greeting
+        isFamily = true;
     }
 
     return (
@@ -53,7 +59,7 @@ export default async function LandingPage() {
             <HeroSection />
 
             {/* Personalized greeting below hero */}
-            <PersonalGreeting guestName={displayName} />
+            <PersonalGreeting guestName={displayName} isFamily={isFamily} />
 
             {/* AC1, AC2, AC3: Event Details Component */}
             <EventDetails />
