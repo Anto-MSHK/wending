@@ -23,7 +23,7 @@ export function PersonalGreeting({
     householdId,
 }: PersonalGreetingProps) {
     return (
-        <section className="bg-white min-h-screen flex flex-col justify-center pt-32 pb-42 md:pt-42 md:pb-54 px-6 relative overflow-visible">
+        <section className="bg-white min-h-screen flex flex-col justify-center pt-30 pb-40 md:pt-40 md:pb-54 px-6 relative overflow-visible">
             {/* Top Divider - Absolute */}
             <img
                 src="/images/divider.png"
@@ -37,7 +37,17 @@ export function PersonalGreeting({
                     <p className="font-nunito font-bold text-xl md:text-2xl text-charcoal/60 mb-2 uppercase tracking-widest">
                         {isFamily ? 'ДОРОГАЯ СЕМЬЯ' : 'Дорогой/ая'}
                     </p>
-                    <h2 className="font-great-vibes text-6xl md:text-7xl lg:text-8xl text-gold leading-tight drop-shadow-sm">
+                    <h2
+                        className="font-great-vibes text-6xl md:text-7xl lg:text-8xl leading-tight"
+                        style={{
+                            background: 'linear-gradient(180deg, #e9c675 0%, #b48d40 100%)',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            backgroundClip: 'text',
+                            WebkitTextStroke: '0.3px rgba(85, 62, 10, 0.5)',
+                            textShadow: '2px 2px 8px rgba(85, 62, 10, 0.3)'
+                        }}
+                    >
                         {guestName}
                     </h2>
                 </div>
@@ -52,7 +62,18 @@ export function PersonalGreeting({
                         {" "}и трогательный день в нашей жизни!
                     </p>
 
-                    <p className="text-3xl md:text-4xl text-gold font-bold tracking-widest my-4 font-cormorant">
+                    <p
+                        className="text-4xl md:text-5xl font-bold tracking-widest my-4"
+                        style={{
+                            fontFamily: '"Dynalight", cursive',
+                            background: 'linear-gradient(180deg, #e9c675 0%, #b48d40 100%)',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            backgroundClip: 'text',
+                            WebkitTextStroke: '0px transparent',
+                            textShadow: '1px 1px 6px rgba(85, 62, 10, 0.25)'
+                        }}
+                    >
                         08.05.2026
                     </p>
 

@@ -60,7 +60,7 @@ export function GuestRSVPCard({
 
     return (
         <div
-            className={`flex items-center gap-2 rounded-xl bg-white px-3 py-1.5 shadow-md ${showName ? 'justify-between' : 'justify-center'}`}
+            className={`flex items-center gap-2 rounded-xl bg-white px-4 py-2 shadow-md ${showName ? 'justify-between' : 'justify-center'}`}
             role="radiogroup"
             aria-label={`Подтверждение для ${guest.guestName}`}
         >
