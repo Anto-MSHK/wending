@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export interface IGuest extends Document {
     guestName: string;
+    gender: 'male' | 'female';
     inviteToken: string;
     isHeadOfHousehold: boolean;
     age?: number;
@@ -19,6 +20,11 @@ const GuestSchema: Schema<IGuest> = new Schema(
             type: String,
             required: [true, 'Guest name is required'],
             trim: true,
+        },
+        gender: {
+            type: String,
+            enum: ['male', 'female'],
+            required: [true, 'Gender is required'],
         },
         inviteToken: {
             type: String,

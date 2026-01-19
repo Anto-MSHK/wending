@@ -118,7 +118,7 @@ export function GuestRSVPCard({
                         aria-checked={isNoSelected}
                         role="radio"
                         className={`
-                            flex h-12 w-12 items-center justify-center rounded-full
+                            relative flex h-12 w-12 items-center justify-center rounded-full
                             text-xl transition-all duration-300
                             focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-1
                             ${isNoSelected

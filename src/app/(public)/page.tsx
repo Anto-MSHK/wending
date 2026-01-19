@@ -77,6 +77,7 @@ export default async function LandingPage() {
             <PersonalGreeting
                 guestName={displayName}
                 isFamily={isHeadOfHousehold}
+                guestGender={guest.gender}
                 guests={guestsForRSVP}
                 householdName={household.householdName || ''}
                 householdId={household._id.toString()}

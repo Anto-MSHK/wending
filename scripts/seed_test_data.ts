@@ -49,6 +49,7 @@ async function seedData() {
         if (!adminGuest) {
             adminGuest = await Guest.create({
                 guestName: ADMIN_NAME,
+                gender: 'male',
                 householdId: household._id,
                 isAttending: null,
                 isHeadOfHousehold: true, // Key flag
@@ -73,6 +74,7 @@ async function seedData() {
         if (!partnerGuest) {
             partnerGuest = await Guest.create({
                 guestName: PARTNER_NAME,
+                gender: 'female',
                 householdId: household._id,
                 isAttending: null,
                 isHeadOfHousehold: false
