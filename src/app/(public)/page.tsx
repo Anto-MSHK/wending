@@ -41,25 +41,46 @@ export default async function LandingPage() {
         redirect('/error');
     }
 
-    // Display Name Logic
-    let displayName = guest.guestName;
-    let isFamily = false;
+    // Determine if this guest is Head of Household
+    const isHeadOfHousehold = guest.isHeadOfHousehold && !!household?.householdName;
 
-    // Check if we should display the household name (e.g. "Семья Ивановых")
-    // This happens if the guest is the Head of Household AND a household name is set
-    if (guest.isHeadOfHousehold && household?.householdName) {
-        displayName = household.householdName;
-        // Typically household names imply a family greeting
-        isFamily = true;
+    // Build RSVP guest list based on role
+    let guestsForRSVP;
+    if (isHeadOfHousehold) {
+        // Head of Household sees all family members
+        const householdGuests = await Guest.find({
+            householdId: guest.householdId,
+        }).lean();
+        guestsForRSVP = householdGuests.map((g) => ({
+            _id: g._id.toString(),
+            guestName: g.guestName,
+            isAttending: g.isAttending ?? null,
+        }));
+    } else {
+        // Regular guest sees only their own RSVP
+        guestsForRSVP = [{
+            _id: guest._id.toString(),
+            guestName: guest.guestName,
+            isAttending: guest.isAttending ?? null,
+        }];
     }
+
+    // Display Name Logic
+    const displayName = isHeadOfHousehold ? household.householdName : guest.guestName;
 
     return (
         <main lang="ru">
             {/* Hero with couple photo, date, and names */}
             <HeroSection />
 
-            {/* Personalized greeting below hero */}
-            <PersonalGreeting guestName={displayName} isFamily={isFamily} />
+            {/* Personalized greeting + RSVP section */}
+            <PersonalGreeting
+                guestName={displayName}
+                isFamily={isHeadOfHousehold}
+                guests={guestsForRSVP}
+                householdName={household.householdName || ''}
+                householdId={household._id.toString()}
+            />
 
             {/* AC1, AC2, AC3: Event Details Component */}
             <EventDetails />
@@ -72,3 +93,5 @@ export default async function LandingPage() {
         </main>
     );
 }
+
+

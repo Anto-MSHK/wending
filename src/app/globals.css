@@ -6,6 +6,8 @@
   --color-gold: #D4AF76;
   --color-cream: #FFF8F0;
   --color-charcoal: #3D3D3D;
+  --color-sage: #B8C9A8;
+  --color-muted: #757575;
 
   /* Custom Font Families */
   --font-family-cormorant: 'Cormorant Garamond', serif;
@@ -16,6 +18,7 @@
 
   /* Custom Animations */
   --animate-fade-in: fade-in 0.6s ease-out;
+  --animate-fadeIn: fadeIn 0.5s ease-in-out;
 }
 
 /* Explicit fallback utilities to ensure fonts apply */
@@ -104,6 +107,16 @@
   to {
     opacity: 1;
     transform: scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
   }
 }
 

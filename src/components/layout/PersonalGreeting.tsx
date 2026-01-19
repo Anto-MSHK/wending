@@ -1,17 +1,29 @@
-import React from 'react';
+"use client";
+
+import { RSVPSection } from "@/components/rsvp/RSVPSection";
+import { GuestForRSVP } from "@/components/rsvp/types";
 
 interface PersonalGreetingProps {
     guestName: string;
     isFamily?: boolean;
+    guests: GuestForRSVP[];
+    householdName: string;
+    householdId: string;
 }
 
 /**
  * Personal greeting section displayed below the hero
- * Shows personalized invitation message to the guest
+ * Shows personalized invitation message to the guest and RSVP form
  */
-export function PersonalGreeting({ guestName, isFamily = false }: PersonalGreetingProps) {
+export function PersonalGreeting({
+    guestName,
+    isFamily = false,
+    guests,
+    householdName,
+    householdId,
+}: PersonalGreetingProps) {
     return (
-        <section className="bg-white min-h-screen flex flex-col justify-center py-22 md:py-32 px-6 relative">
+        <section className="bg-white min-h-screen flex flex-col justify-center pt-32 pb-42 md:pt-42 md:pb-54 px-6 relative overflow-visible">
             {/* Top Divider - Absolute */}
             <img
                 src="/images/divider.png"
@@ -44,12 +56,20 @@ export function PersonalGreeting({ guestName, isFamily = false }: PersonalGreeti
                         08.05.2026
                     </p>
 
-                    <p className="mb-6">
+                    <p className="mb-2">
                         Мы будем безумно рады видеть вас
                         <br className="hidden md:block" />
                         {" "}в кругу наших гостей!
                     </p>
                 </div>
+
+                {/* RSVP Section */}
+                <RSVPSection
+                    guests={guests}
+                    householdName={householdName}
+                    householdId={householdId}
+                    showNames={isFamily}
+                />
             </div>
 
             {/* Bottom Divider - Mirrored & Absolute */}
@@ -61,3 +81,4 @@ export function PersonalGreeting({ guestName, isFamily = false }: PersonalGreeti
         </section>
     );
 }
+
