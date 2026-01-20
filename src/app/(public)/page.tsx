@@ -6,7 +6,7 @@ import Guest from '@/models/Guest';
 import { HeroSection } from '@/components/layout/HeroSection';
 import { PersonalGreeting } from '@/components/layout/PersonalGreeting';
 import { LoveStorySection } from '@/components/sections/LoveStorySection';
-import { EventDetails } from '@/components/layout/EventDetails';
+import { RestaurantDetails } from '@/components/layout/RestaurantDetails';
 import { CountdownTimer } from '@/components/layout/CountdownTimer';
 
 /**
@@ -83,8 +83,8 @@ export default async function LandingPage() {
                 householdId={household._id.toString()}
             />
 
-            {/* AC1, AC2, AC3: Event Details Component */}
-            <EventDetails />
+            {/* AC1, AC2, AC3: Restaurant Details Component (Replaces EventDetails) */}
+            <RestaurantDetails />
 
             {/* AC5: Countdown Timer */}
             <CountdownTimer />

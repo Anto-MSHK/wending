@@ -60,8 +60,7 @@ const GuestSchema: Schema<IGuest> = new Schema(
     }
 );
 
-// Create index on inviteToken for fast lookups
-GuestSchema.index({ inviteToken: 1 });
+
 
 // Prevent model recompilation during hot reloads
 const Guest: Model<IGuest> = mongoose.models.Guest || mongoose.model<IGuest>('Guest', GuestSchema);
