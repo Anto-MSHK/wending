@@ -10,6 +10,7 @@ interface PersonalGreetingProps {
     guests: GuestForRSVP[];
     householdName: string;
     householdId: string;
+    onRSVPUpdate?: (guestId: string, isAttending: boolean) => void;
 }
 
 /**
@@ -23,6 +24,7 @@ export function PersonalGreeting({
     guests,
     householdName,
     householdId,
+    onRSVPUpdate,
 }: PersonalGreetingProps) {
     return (
         <section className="bg-white min-h-screen flex flex-col justify-center pt-30 pb-40 md:pt-40 md:pb-54 px-6 relative overflow-visible">
@@ -92,6 +94,7 @@ export function PersonalGreeting({
                     householdName={householdName}
                     householdId={householdId}
                     showNames={isFamily}
+                    onUpdate={onRSVPUpdate}
                 />
             </div>
 
@@ -104,4 +107,6 @@ export function PersonalGreeting({
         </section>
     );
 }
+
+
 

@@ -12,7 +12,7 @@ import { useState } from "react";
  *
  * @see Story 2.1 - RSVPSection Component
  */
-export function RSVPSection({ guests, showNames = true }: RSVPSectionProps) {
+export function RSVPSection({ guests, showNames = true, onUpdate }: RSVPSectionProps) {
     const [isPending, startTransition] = useTransition();
     const [localGuests, setLocalGuests] = useState<GuestForRSVP[]>(guests);
 
@@ -21,6 +21,9 @@ export function RSVPSection({ guests, showNames = true }: RSVPSectionProps) {
         setLocalGuests((prev) =>
             prev.map((g) => (g._id === guestId ? { ...g, isAttending } : g))
         );
+
+        // Notify parent immediately
+        onUpdate?.(guestId, isAttending);
 
         startTransition(async () => {
             const result = await updateGuestRsvp(guestId, isAttending);
@@ -34,6 +37,11 @@ export function RSVPSection({ guests, showNames = true }: RSVPSectionProps) {
                             : g
                     )
                 );
+                // Revert parent state (optional, but good for consistency)
+                const originalStatus = guests.find((og) => og._id === guestId)?.isAttending ?? null;
+                if (originalStatus !== null) {
+                    onUpdate?.(guestId, originalStatus);
+                }
                 console.error("RSVP update failed:", result.error);
             }
         });

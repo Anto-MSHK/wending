@@ -194,6 +194,22 @@ So that I feel confident and celebrated.
 **And** The form is replaced by a "Thank you" confirmation message
 **And** If there is an error, a friendly message is shown instead
 
+### Story 2.4: Guest Questionnaire
+
+As a Guest,
+I want to answer additional questions about my preferences (menu, allergies, alcohol, transfer),
+So that the hosts can plan the event according to my needs.
+
+**Acceptance Criteria:**
+
+**Given** The user confirms "Yes" for at least one household member
+**When** They scroll past the RSVP section
+**Then** They see a "Questionnaire" section with additional questions
+**And** They can select menu choice per guest (Meat/Fish/Vegetarian)
+**And** They can specify allergies (checkboxes + free text)
+**And** They can select alcohol preferences (Wine/Champagne/Spirits/Non-alcoholic)
+**And** They can indicate transfer needs per household (Yes/No)
+
 ### Epic 3: Host Dashboard & Guest Management
 
 **Goal:** The Host can securely access a private dashboard to monitor real-time attendance and manage guest details.

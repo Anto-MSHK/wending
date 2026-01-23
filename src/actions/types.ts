@@ -22,3 +22,41 @@ export interface GuestUpdateResult {
     isAttending: boolean;
     updatedAt: string; // ISO date string
 }
+
+/**
+ * Result type for guest menu choice updates
+ */
+export interface GuestMenuResult {
+    guestId: string;
+    menuChoice: string | null;
+    updatedAt: string;
+}
+
+/**
+ * Result type for guest allergies updates
+ */
+export interface GuestAllergiesResult {
+    guestId: string;
+    allergies: string[];
+    allergiesOther: string;
+    hasNoAllergies: boolean;
+    updatedAt: string;
+}
+
+/**
+ * Result type for guest alcohol preferences updates
+ */
+export interface GuestAlcoholResult {
+    guestId: string;
+    alcoholPreferences: string[];
+    updatedAt: string;
+}
+
+/**
+ * Result type for guest transfer updates (per-guest now)
+ */
+export interface GuestTransferResult {
+    guestId: string;
+    needsTransfer: boolean;
+    updatedAt: string;
+}

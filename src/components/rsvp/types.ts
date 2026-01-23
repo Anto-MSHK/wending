@@ -20,6 +20,7 @@ export interface RSVPSectionProps {
     householdName: string;
     householdId: string;
     showNames?: boolean;
+    onUpdate?: (guestId: string, isAttending: boolean) => void;
 }
 
 /**
