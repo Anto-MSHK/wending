@@ -128,14 +128,6 @@ export default function AccommodationSection({
                     <span>Нет</span>
                 </button>
             </div>
-
-            {/* Helper note */}
-            {isHeadOfHousehold && (
-                <p className="mt-3 flex items-center gap-1.5 text-xs text-muted">
-                    <Info size={14} />
-                    <span>Мы поможем подобрать размещение для всех</span>
-                </p>
-            )}
         </div>
     );
 }

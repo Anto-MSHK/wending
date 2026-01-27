@@ -94,7 +94,7 @@ export default function SecondDaySection({
                     `}
                 >
                     <Check size={18} />
-                    <span>Да, с радостью</span>
+                    <span>Да</span>
                 </button>
                 <button
                     type="button"
@@ -118,11 +118,6 @@ export default function SecondDaySection({
                 </button>
             </div>
 
-            {/* Helper note */}
-            <p className="mt-3 flex items-center gap-1.5 text-xs text-muted/60 italic">
-                <Info size={14} />
-                <span>Это поможет нам в планировании</span>
-            </p>
         </div>
     );
 }

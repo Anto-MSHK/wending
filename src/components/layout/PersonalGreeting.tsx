@@ -1,7 +1,9 @@
 "use client";
 
+import { updateGuestRsvp } from "@/actions/rsvp.actions";
 import { RSVPSection } from "@/components/rsvp/RSVPSection";
 import { GuestForRSVP } from "@/components/rsvp/types";
+import { WEDDING_CONFIG } from "@/lib/config";
 
 interface PersonalGreetingProps {
     guestName: string;
@@ -78,7 +80,7 @@ export function PersonalGreeting({
                             textShadow: '1px 1px 6px rgba(85, 62, 10, 0.25)'
                         }}
                     >
-                        08.05.2026
+                        {WEDDING_CONFIG.DATE.split('-').reverse().join('.')}
                     </p>
 
                     <p className="mb-2">
