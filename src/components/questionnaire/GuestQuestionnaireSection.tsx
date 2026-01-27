@@ -11,11 +11,15 @@ import {
     updateGuestSuggestedTracks,
     updateGuestAccommodation,
     updateHouseholdAccommodation,
+    updateGuestSecondDay,
+    updateHouseholdSecondDay,
 } from "@/actions/questionnaire.actions";
 import { GuestQuestionnaireSectionProps, QuestionnaireData } from "./types";
 import { GuestPreferenceCard } from "./GuestPreferenceCard";
 import { TransferSection } from "./TransferSection";
 import AccommodationSection from "./AccommodationSection";
+import SecondDaySection from "./SecondDaySection";
+import { UtensilsCrossed } from "lucide-react";
 
 /**
  * Main questionnaire section that appears after RSVP confirmation.
@@ -52,6 +56,7 @@ export function GuestQuestionnaireSection({
             alcoholPreferences: [],
             needsTransfer: null,
             hasAccommodation: null,
+            wantsSecondDay: null,
             suggestedTracks: [],
         };
     }, [questionnaires]);
@@ -71,6 +76,7 @@ export function GuestQuestionnaireSection({
                     alcoholPreferences: [],
                     needsTransfer: null,
                     hasAccommodation: null,
+                    wantsSecondDay: null,
                     suggestedTracks: [],
                     ...updates,
                 }];
@@ -203,6 +209,38 @@ export function GuestQuestionnaireSection({
         });
     }, [attendingGuests, householdId, initialQuestionnaires, updateQuestionnaire]);
 
+    const handleGuestSecondDayChange = useCallback(async (guestId: string, wantsSecondDay: boolean) => {
+        updateQuestionnaire(guestId, { wantsSecondDay });
+
+        startTransition(async () => {
+            const result = await updateGuestSecondDay(guestId, wantsSecondDay);
+            if (!result.success) {
+                const original = initialQuestionnaires.find(q => q.guestId === guestId);
+                updateQuestionnaire(guestId, { wantsSecondDay: original?.wantsSecondDay ?? null });
+                console.error("Second day update failed:", result.error);
+            }
+        });
+    }, [initialQuestionnaires, updateQuestionnaire]);
+
+    const handleBulkSecondDayChange = useCallback(async (wantsSecondDay: boolean) => {
+        // Optimistic update for all attending guests
+        attendingGuests.forEach(g => {
+            updateQuestionnaire(g._id, { wantsSecondDay });
+        });
+
+        startTransition(async () => {
+            const result = await updateHouseholdSecondDay(householdId, wantsSecondDay);
+            if (!result.success) {
+                // Revert all
+                attendingGuests.forEach(g => {
+                    const original = initialQuestionnaires.find(q => q.guestId === g._id);
+                    updateQuestionnaire(g._id, { wantsSecondDay: original?.wantsSecondDay ?? null });
+                });
+                console.error("Bulk second day update failed:", result.error);
+            }
+        });
+    }, [attendingGuests, householdId, initialQuestionnaires, updateQuestionnaire]);
+
     // Single guest view if not HoH (as requested: "if specific guest... unified form")
     const isSingleGuestView = !isHeadOfHousehold;
 
@@ -214,16 +252,17 @@ export function GuestQuestionnaireSection({
     return (
         <section
             id="questionnaire"
-            className="animate-fade-in-up mt-8 w-full px-4"
+            className="animate-fade-in-up mt-8 w-full max-w-2xl mx-auto px-4"
             aria-labelledby="questionnaire-heading"
         >
             {/* Section Header */}
             <div className="mb-6 text-center">
                 <h2
                     id="questionnaire-heading"
-                    className="font-cormorant text-2xl font-semibold text-gold"
+                    className="font-cormorant text-2xl font-semibold text-gold flex items-center justify-center gap-2"
                 >
-                    🍽️ Несколько вопросов
+                    <UtensilsCrossed size={24} />
+                    Несколько вопросов
                 </h2>
                 <p className="mt-1 text-sm text-charcoal/70">
                     Чтобы сделать праздник идеальным для вас
@@ -257,17 +296,24 @@ export function GuestQuestionnaireSection({
                                     isPending={isPending}
                                     embedded={true}
                                 />
-                                <div className="mt-6 pt-6 border-t border-muted/20">
-                                    <AccommodationSection
-                                        guests={attendingGuests}
-                                        questionnaires={questionnaires}
-                                        isHeadOfHousehold={isHeadOfHousehold}
-                                        onGuestAccommodationChange={handleAccommodationChange}
-                                        onBulkAccommodationChange={handleBulkAccommodationChange}
-                                        isPending={isPending}
-                                        embedded={true}
-                                    />
-                                </div>
+                                <AccommodationSection
+                                    guests={attendingGuests}
+                                    questionnaires={questionnaires}
+                                    isHeadOfHousehold={isHeadOfHousehold}
+                                    onGuestAccommodationChange={handleAccommodationChange}
+                                    onBulkAccommodationChange={handleBulkAccommodationChange}
+                                    isPending={isPending}
+                                    embedded={true}
+                                />
+                                <SecondDaySection
+                                    guests={attendingGuests}
+                                    questionnaires={questionnaires}
+                                    isHeadOfHousehold={isHeadOfHousehold}
+                                    onGuestSecondDayChange={handleGuestSecondDayChange}
+                                    onBulkSecondDayChange={handleBulkSecondDayChange}
+                                    isPending={isPending}
+                                    embedded={true}
+                                />
                             </>
                         )}
                     </GuestPreferenceCard>
@@ -291,6 +337,15 @@ export function GuestQuestionnaireSection({
                             isHeadOfHousehold={isHeadOfHousehold}
                             onGuestAccommodationChange={handleAccommodationChange}
                             onBulkAccommodationChange={handleBulkAccommodationChange}
+                            isPending={isPending}
+                            embedded={false}
+                        />
+                        <SecondDaySection
+                            guests={attendingGuests}
+                            questionnaires={questionnaires}
+                            isHeadOfHousehold={isHeadOfHousehold}
+                            onGuestSecondDayChange={handleGuestSecondDayChange}
+                            onBulkSecondDayChange={handleBulkSecondDayChange}
                             isPending={isPending}
                             embedded={false}
                         />

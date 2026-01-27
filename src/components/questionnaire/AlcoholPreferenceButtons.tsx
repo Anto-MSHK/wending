@@ -1,13 +1,14 @@
 "use client";
 
 import { AlcoholPreference } from "@/models/GuestQuestionnaire";
+import { Wine, Flame, GlassWater, Ban, Sparkles } from "lucide-react";
 import { AlcoholPreferenceButtonsProps } from "./types";
 
-const ALCOHOL_OPTIONS: { value: AlcoholPreference; emoji: string; label: string }[] = [
-    { value: "wine", emoji: "🍷", label: "Вино" },
-    { value: "champagne", emoji: "🥂", label: "Шампанское" },
-    { value: "spirits", emoji: "🥃", label: "Крепкие" },
-    { value: "none", emoji: "🚫", label: "Безалкогольное" },
+const ALCOHOL_OPTIONS: { value: AlcoholPreference; icon: React.ReactNode; label: string }[] = [
+    { value: "wine", icon: <Wine size={18} />, label: "Вино" },
+    { value: "champagne", icon: <Sparkles size={18} />, label: "Шампанское" },
+    { value: "spirits", icon: <Flame size={18} />, label: "Крепкие" },
+    { value: "none", icon: <Ban size={18} />, label: "Безалкогольное" },
 ];
 
 /**
@@ -49,7 +50,13 @@ export function AlcoholPreferenceButtons({
 
     return (
         <div className="space-y-2">
-            <span className="text-sm font-medium text-charcoal">Напитки</span>
+            <div className="flex items-center gap-2 mb-2">
+                <GlassWater className="w-5 h-5 text-gold" />
+                <span className="text-sm font-medium text-charcoal">Напитки</span>
+            </div>
+            <p className="mb-4 text-xs text-charcoal/80">
+                Ваши предпочтения по напиткам на вечере
+            </p>
             <div className="flex flex-wrap gap-2">
                 {ALCOHOL_OPTIONS.map((option) => {
                     const isSelected = selected.includes(option.value);
@@ -77,7 +84,7 @@ export function AlcoholPreferenceButtons({
                                 ${disabled ? "opacity-50 cursor-not-allowed" : isDisabledByNone ? "" : "cursor-pointer"}
                             `}
                         >
-                            <span className="text-base">{option.emoji}</span>
+                            {option.icon}
                             <span>{option.label}</span>
                         </button>
                     );

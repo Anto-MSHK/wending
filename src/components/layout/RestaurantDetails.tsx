@@ -2,6 +2,7 @@
 
 import { useState, useRef, TouchEvent } from 'react';
 import Image from 'next/image';
+import { ChevronLeft, ChevronRight, MapPin } from 'lucide-react';
 import { WEDDING_CONFIG } from '@/lib/config';
 
 export function RestaurantDetails() {
@@ -115,14 +116,14 @@ export function RestaurantDetails() {
                         className="hidden md:block absolute left-2 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white text-gold p-2 rounded-full transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100 z-10"
                         aria-label="Previous slide"
                     >
-                        ❮
+                        <ChevronLeft size={24} />
                     </button>
                     <button
                         onClick={nextSlide}
                         className="hidden md:block absolute right-2 top-1/2 -translate-y-1/2 bg-white/70 hover:bg-white text-gold p-2 rounded-full transition-colors opacity-0 group-hover:opacity-100 focus:opacity-100 z-10"
                         aria-label="Next slide"
                     >
-                        ❯
+                        <ChevronRight size={24} />
                     </button>
 
                     {/* Dots - Bottom Right */}
@@ -154,8 +155,9 @@ export function RestaurantDetails() {
                     href="https://yandex.ru/maps/?text=Scher+Hof+Azov"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-block px-6 py-2 bg-gold text-white rounded-full hover:bg-gold/90 transition-all shadow-md hover:shadow-lg font-nunito font-bold text-lg tracking-wide transform hover:-translate-y-0.5"
+                    className="inline-flex items-center gap-2 px-6 py-2 bg-gold text-white rounded-full hover:bg-gold/90 transition-all shadow-md hover:shadow-lg font-nunito font-bold text-lg tracking-wide transform hover:-translate-y-0.5"
                 >
+                    <MapPin size={20} />
                     Показать на карте
                 </a>
             </div>

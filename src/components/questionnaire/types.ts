@@ -29,6 +29,7 @@ export interface QuestionnaireData {
     alcoholPreferences: AlcoholPreference[];
     needsTransfer: boolean | null;
     hasAccommodation: boolean | null;
+    wantsSecondDay: boolean | null;
     suggestedTracks: string[];
 }
 
@@ -106,6 +107,19 @@ export interface TransferSectionProps {
     isHeadOfHousehold: boolean;
     onGuestTransferChange: (guestId: string, needsTransfer: boolean) => Promise<void>;
     onBulkTransferChange: (needsTransfer: boolean) => Promise<void>;
+    isPending: boolean;
+    embedded?: boolean;
+}
+
+/**
+ * Props for SecondDaySection (per-guest with HoH bulk option)
+ */
+export interface SecondDaySectionProps {
+    guests: GuestForQuestionnaire[];
+    questionnaires: QuestionnaireData[];
+    isHeadOfHousehold: boolean;
+    onGuestSecondDayChange: (guestId: string, wantsSecondDay: boolean) => Promise<void>;
+    onBulkSecondDayChange: (wantsSecondDay: boolean) => Promise<void>;
     isPending: boolean;
     embedded?: boolean;
 }

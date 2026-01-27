@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import { User } from "lucide-react";
 import { MenuChoice, AllergenType, AlcoholPreference } from "@/models/GuestQuestionnaire";
 import { GuestPreferenceCardProps } from "./types";
 import { MenuChoiceButtons } from "./MenuChoiceButtons";
@@ -97,14 +98,14 @@ export function GuestPreferenceCard({
         <div className="rounded-2xl bg-white p-5 shadow-md">
             {/* Guest Name Header - Optional */}
             {showName && (
-                <div className="mb-6 flex items-center gap-2 border-b border-muted/20 pb-3">
-                    <span className="text-lg">👤</span>
-                    <h4 className="font-inter text-lg font-semibold text-charcoal">
+                <div className="mb-8 flex items-center gap-2 border-b border-muted/20 pb-3">
+                    <User className="w-5 h-5 text-gold" />
+                    <span className="text-sm font-medium text-charcoal uppercase tracking-wider">
                         {guest.guestName}
                         {showKidsOption && (
-                            <span className="ml-2 text-sm font-normal text-muted">(ребёнок)</span>
+                            <span className="ml-2 text-xs font-normal text-muted lowercase tracking-normal">(ребёнок)</span>
                         )}
-                    </h4>
+                    </span>
                 </div>
             )}
 
@@ -149,7 +150,7 @@ export function GuestPreferenceCard({
 
             {/* Embedded Children (Transfer, Accommodation sections for single guest) */}
             {children && (
-                <div className="mt-8 pt-6 border-t border-muted/20">
+                <div className="mt-8 flex flex-col gap-8">
                     {children}
                 </div>
             )}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Check, X, Sparkles, PartyPopper, Heart, Frown, HeartCrack, User, UserRound } from "lucide-react";
 import { GuestRSVPCardProps } from "./types";
 
 /**
@@ -93,13 +94,13 @@ export function GuestRSVPCard({
                             ${showSpinner && isYesSelected ? "animate-pulse" : ""}
                         `}
                     >
-                        👍
+                        <Check size={24} />
                         {/* Confetti burst */}
                         {showConfetti && (
                             <>
-                                <span className="absolute -top-2 left-0 animate-bounce text-sm">✨</span>
-                                <span className="absolute -top-2 right-0 animate-bounce text-sm">🎉</span>
-                                <span className="absolute -top-4 left-1/2 -translate-x-1/2 animate-bounce text-base">💕</span>
+                                <Sparkles className="absolute -top-3 left-0 animate-bounce text-gold w-4 h-4" />
+                                <PartyPopper className="absolute -top-3 right-0 animate-bounce text-gold w-4 h-4" />
+                                <Heart className="absolute -top-6 left-1/2 -translate-x-1/2 animate-bounce text-blush w-5 h-5 fill-blush" />
                             </>
                         )}
                     </button>
@@ -128,13 +129,13 @@ export function GuestRSVPCard({
                             ${showSpinner && isNoSelected ? "animate-pulse" : ""}
                         `}
                     >
-                        👎
+                        <X size={24} />
                         {/* Sad emoji burst */}
                         {showSadEmoji && (
                             <>
-                                <span className="absolute -top-2 left-0 animate-bounce text-sm">😢</span>
-                                <span className="absolute -top-2 right-0 animate-bounce text-sm">💔</span>
-                                <span className="absolute -top-4 left-1/2 -translate-x-1/2 animate-bounce text-base">😔</span>
+                                <Frown className="absolute -top-3 left-0 animate-bounce text-charcoal/60 w-4 h-4" />
+                                <Frown className="absolute -top-3 right-0 animate-bounce text-charcoal/60 w-4 h-4" />
+                                <Heart className="absolute -top-6 left-1/2 -translate-x-1/2 animate-bounce text-charcoal w-5 h-5 fill-charcoal" />
                             </>
                         )}
                     </button>

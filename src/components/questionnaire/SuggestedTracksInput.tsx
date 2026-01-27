@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import { Music, X, Loader2, Info } from "lucide-react";
 import { SuggestedTracksInputProps } from "./types";
 
 interface MusicSearchResult {
@@ -129,9 +130,9 @@ export default function SuggestedTracksInput({
 
     return (
         <div>
-            <div className="mb-2 flex items-center gap-2">
-                <span className="text-lg">🎵</span>
-                <h5 className="font-inter text-sm font-medium text-charcoal">Музыка</h5>
+            <div className="flex items-center gap-2 mb-2">
+                <Music className="w-5 h-5 text-gold" />
+                <span className="text-sm font-medium text-charcoal">Музыка</span>
             </div>
             <p className="mb-3 text-xs text-muted">
                 Предложите до 5 треков для плейлиста
@@ -153,7 +154,7 @@ export default function SuggestedTracksInput({
                                 disabled={disabled}
                                 aria-label={`Удалить ${track}`}
                             >
-                                ×
+                                <X size={14} />
                             </button>
                         </div>
                     ))}
@@ -175,9 +176,9 @@ export default function SuggestedTracksInput({
                         disabled={disabled}
                     />
                     {isLoading && (
-                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-muted">
-                            ⏳
-                        </span>
+                        <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gold animate-spin">
+                            <Loader2 size={16} />
+                        </div>
                     )}
 
                     {showDropdown && suggestions.length > 0 && (

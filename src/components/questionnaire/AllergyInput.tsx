@@ -1,14 +1,15 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { Bean, Fish, Wheat, Milk, Check, Info } from "lucide-react";
 import { AllergenType } from "@/models/GuestQuestionnaire";
 import { AllergyInputProps } from "./types";
 
-const ALLERGEN_OPTIONS: { value: AllergenType; emoji: string; label: string }[] = [
-    { value: "nuts", emoji: "🥜", label: "Орехи" },
-    { value: "seafood", emoji: "🦐", label: "Морепродукты" },
-    { value: "gluten", emoji: "🌾", label: "Глютен" },
-    { value: "lactose", emoji: "🥛", label: "Лактоза" },
+const ALLERGEN_OPTIONS: { value: AllergenType; icon: React.ReactNode; label: string }[] = [
+    { value: "nuts", icon: <Bean size={18} />, label: "Орехи" },
+    { value: "seafood", icon: <Fish size={18} />, label: "Морепродукты" },
+    { value: "gluten", icon: <Wheat size={18} />, label: "Глютен" },
+    { value: "lactose", icon: <Milk size={18} />, label: "Лактоза" },
 ];
 
 /**
@@ -61,7 +62,13 @@ export function AllergyInput({
 
     return (
         <div className="space-y-3">
-            <span className="text-sm font-medium text-charcoal">Пищевые ограничения</span>
+            <div className="flex items-center gap-2 mb-2">
+                <Info className="w-5 h-5 text-gold" />
+                <span className="text-sm font-medium text-charcoal">Пищевые ограничения</span>
+            </div>
+            <p className="mb-4 text-xs text-charcoal/80">
+                Пожалуйста, укажите, если у вас есть аллергия или особые требования к еде
+            </p>
 
             {/* Common allergens */}
             <div className="flex flex-wrap gap-2">
@@ -86,7 +93,7 @@ export function AllergyInput({
                                 ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
                             `}
                         >
-                            <span>{option.emoji}</span>
+                            {option.icon}
                             <span>{option.label}</span>
                         </button>
                     );

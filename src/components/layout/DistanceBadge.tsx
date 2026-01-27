@@ -1,4 +1,5 @@
 import React from 'react';
+import { Footprints, Car } from 'lucide-react';
 
 interface DistanceBadgeProps {
     type: 'walk' | 'car';
@@ -8,7 +9,7 @@ interface DistanceBadgeProps {
 
 export const DistanceBadge: React.FC<DistanceBadgeProps> = ({ type, duration, isVisible }) => {
     const bgColor = type === 'walk' ? 'bg-[#B8C9A8]' : 'bg-[#757575]'; // Sage vs Muted
-    const icon = type === 'walk' ? '🚶' : '🚗';
+    const Icon = type === 'walk' ? Footprints : Car;
 
     return (
         <div
@@ -19,7 +20,7 @@ export const DistanceBadge: React.FC<DistanceBadgeProps> = ({ type, duration, is
         ${bgColor}
       `}
         >
-            <span className="text-xl">{icon}</span>
+            <Icon size={20} />
             <span className="font-sans font-medium text-sm whitespace-nowrap">{duration}</span>
         </div>
     );

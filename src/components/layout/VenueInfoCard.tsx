@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import { MapPin } from 'lucide-react';
 import { Venue } from './ScrollDrivenMap';
 
 interface VenueInfoCardProps {
@@ -42,8 +43,9 @@ export const VenueInfoCard: React.FC<VenueInfoCardProps> = ({ venue }) => {
                     href={venue.mapLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-block px-6 py-1.5 bg-[#D4AF76] text-white rounded-full font-sans font-medium text-sm hover:bg-[#b8935c] transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-[#D4AF76]"
+                    className="inline-flex items-center gap-2 px-6 py-1.5 bg-[#D4AF76] text-white rounded-full font-sans font-medium text-sm hover:bg-[#b8935c] transition-colors focus:ring-2 focus:ring-offset-2 focus:ring-[#D4AF76]"
                 >
+                    <MapPin size={16} />
                     Показать на карте
                 </a>
             </div>

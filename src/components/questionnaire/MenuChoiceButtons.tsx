@@ -1,6 +1,7 @@
 "use client";
 
 import { MenuChoice } from "@/models/GuestQuestionnaire";
+import { Beef, Fish, Salad, Baby, Utensils } from "lucide-react";
 import { MenuChoiceButtonsProps } from "./types";
 
 /**
@@ -20,19 +21,25 @@ export function MenuChoiceButtons({
         onSelect(choice);
     };
 
-    const menuOptions: { value: MenuChoice; emoji: string; label: string }[] = [
-        { value: "meat", emoji: "🥩", label: "Мясо" },
-        { value: "fish", emoji: "🐟", label: "Рыба" },
-        { value: "vegetarian", emoji: "🥗", label: "Вегетарианское" },
+    const menuOptions: { value: MenuChoice; icon: React.ReactNode; label: string }[] = [
+        { value: "meat", icon: <Beef size={18} />, label: "Мясо" },
+        { value: "fish", icon: <Fish size={18} />, label: "Рыба" },
+        { value: "vegetarian", icon: <Salad size={18} />, label: "Вегетарианское" },
     ];
 
     if (showKidsOption) {
-        menuOptions.push({ value: "kids", emoji: "🍝", label: "Детское" });
+        menuOptions.push({ value: "kids", icon: <Baby size={18} />, label: "Детское" });
     }
 
     return (
         <div className="space-y-2">
-            <span className="text-sm font-medium text-charcoal">Меню</span>
+            <div className="flex items-center gap-2 mb-2">
+                <Utensils className="w-5 h-5 text-gold" />
+                <span className="text-sm font-medium text-charcoal">Меню</span>
+            </div>
+            <p className="mb-4 text-xs text-charcoal/80">
+                Выберите предпочтительное основное блюдо
+            </p>
             <div className="flex flex-wrap gap-2">
                 {menuOptions.map((option) => {
                     const isSelected = selected === option.value;
@@ -55,7 +62,7 @@ export function MenuChoiceButtons({
                                 ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
                             `}
                         >
-                            <span className="text-base">{option.emoji}</span>
+                            {option.icon}
                             <span>{option.label}</span>
                         </button>
                     );

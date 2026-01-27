@@ -13,6 +13,7 @@ export interface IGuestQuestionnaire extends Document {
     alcoholPreferences: AlcoholPreference[];
     needsTransfer: boolean | null;
     hasAccommodation: boolean | null;
+    wantsSecondDay: boolean | null;
     suggestedTracks: string[];
     createdAt: Date;
     updatedAt: Date;
@@ -55,6 +56,10 @@ const GuestQuestionnaireSchema: Schema<IGuestQuestionnaire> = new Schema(
             default: null,
         },
         hasAccommodation: {
+            type: Boolean,
+            default: null,
+        },
+        wantsSecondDay: {
             type: Boolean,
             default: null,
         },

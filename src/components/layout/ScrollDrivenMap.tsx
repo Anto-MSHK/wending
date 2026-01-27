@@ -116,6 +116,9 @@ export const ScrollDrivenMap: React.FC<ScrollDrivenMapProps> = ({ className }) =
         <section ref={containerRef} className={`relative h-[700vh] ${className || ''}`}>
             <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center bg-[#FFF8F0] overflow-hidden">
 
+                {/* Top Gradient Overlay */}
+                <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-white to-transparent z-[100] pointer-events-none" />
+
                 {/* Debug Overlay - Remove in prod */}
                 {/* <div className="absolute top-4 left-4 bg-black/50 text-white p-2 z-50 rounded">
           Progress: {scrollProgress.toFixed(2)} | Venue: {activeVenue}

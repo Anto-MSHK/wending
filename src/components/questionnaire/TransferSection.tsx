@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Bus, Car, Info } from "lucide-react";
 import { TransferSectionProps } from "./types";
 
 /**
@@ -63,20 +64,20 @@ export function TransferSection({
     const showSpinner = isUpdating || isPending;
 
     const containerClasses = embedded
-        ? "pt-6 border-t border-muted/20" // Embedded style
+        ? "" // Remove border-t here, GuestPreferenceCard will handle vertical spacing
         : "rounded-2xl bg-white p-5 shadow-md"; // Standalone style
 
     return (
         <div className={containerClasses}>
             {/* Header */}
-            <div className="mb-4 flex items-center gap-2">
-                <span className="text-xl">🚌</span>
-                <h3 className="font-cormorant text-xl font-semibold text-charcoal">
+            <div className="mb-2 flex items-center gap-2">
+                <Bus className="w-5 h-5 text-gold" />
+                <span className="text-sm font-medium text-charcoal">
                     Трансфер
-                </h3>
+                </span>
             </div>
 
-            <p className="mb-4 text-sm text-charcoal/80">
+            <p className="mb-4 text-xs text-charcoal/80">
                 {isHeadOfHousehold
                     ? "Нужен ли вашей семье трансфер до ресторана?"
                     : "Нужен ли вам трансфер до ресторана?"}
@@ -91,6 +92,7 @@ export function TransferSection({
                     aria-pressed={isYesSelected}
                     className={`
                         flex-1 rounded-xl px-4 py-3 text-sm font-medium
+                        flex items-center justify-center gap-2
                         transition-all duration-200
                         focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-1
                         ${isYesSelected
@@ -100,7 +102,8 @@ export function TransferSection({
                         ${showSpinner ? "opacity-70 cursor-not-allowed" : "cursor-pointer"}
                     `}
                 >
-                    🚌 Да{isHeadOfHousehold ? ", нужен всем" : ", нужен"}
+                    <Bus size={18} />
+                    <span>Да{isHeadOfHousehold ? ", нужен всем" : ", нужен"}</span>
                 </button>
 
                 <button
@@ -110,6 +113,7 @@ export function TransferSection({
                     aria-pressed={isNoSelected}
                     className={`
                         flex-1 rounded-xl px-4 py-3 text-sm font-medium
+                        flex items-center justify-center gap-2
                         transition-all duration-200
                         focus:outline-none focus:ring-2 focus:ring-gold focus:ring-offset-1
                         ${isNoSelected
@@ -119,17 +123,11 @@ export function TransferSection({
                         ${showSpinner ? "opacity-70 cursor-not-allowed" : "cursor-pointer"}
                     `}
                 >
-                    🚗 Нет{isHeadOfHousehold ? ", приедем сами" : ", приеду сам(а)"}
+                    <Car size={18} />
+                    <span>Нет{isHeadOfHousehold ? ", приедем сами" : ""}</span>
                 </button>
             </div>
 
-            {/* Helper note */}
-            {isHeadOfHousehold && (
-                <p className="mt-4 flex items-center gap-1.5 text-xs text-muted">
-                    <span>ℹ️</span>
-                    <span>Мы организуем трансфер для всех гостей</span>
-                </p>
-            )}
         </div>
     );
 }

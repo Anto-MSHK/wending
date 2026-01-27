@@ -427,3 +427,100 @@ export async function updateHouseholdAccommodation(
         };
     }
 }
+/**
+ * Updates a guest's second day preference.
+ */
+export async function updateGuestSecondDay(
+    guestId: string,
+    wantsSecondDay: boolean
+): Promise<ActionResponse<{ guestId: string; wantsSecondDay: boolean; updatedAt: string }>> {
+    try {
+        if (!mongoose.Types.ObjectId.isValid(guestId)) {
+            return { success: false, error: "Invalid guest ID" };
+        }
+
+        if (typeof wantsSecondDay !== "boolean") {
+            return { success: false, error: "Invalid value" };
+        }
+
+        await connectDB();
+        const questionnaire = await GuestQuestionnaire.findOneAndUpdate(
+            { guestId: new mongoose.Types.ObjectId(guestId) },
+            {
+                $set: { wantsSecondDay },
+                $setOnInsert: { guestId: new mongoose.Types.ObjectId(guestId) }
+            },
+            { upsert: true, new: true }
+        ).lean();
+
+        return {
+            success: true,
+            data: {
+                guestId,
+                wantsSecondDay: questionnaire.wantsSecondDay!,
+                updatedAt: new Date().toISOString(),
+            },
+        };
+    } catch (error) {
+        console.error("Second day update error:", error);
+        return {
+            success: false,
+            error: "Что-то пошло не так. Попробуйте ещё раз.",
+        };
+    }
+}
+
+/**
+ * Updates second day preference for ALL guests in a household.
+ */
+export async function updateHouseholdSecondDay(
+    householdId: string,
+    wantsSecondDay: boolean
+): Promise<ActionResponse<{ updatedCount: number; updatedAt: string }>> {
+    try {
+        if (!mongoose.Types.ObjectId.isValid(householdId)) {
+            return { success: false, error: "Invalid household ID" };
+        }
+
+        if (typeof wantsSecondDay !== "boolean") {
+            return { success: false, error: "Invalid value" };
+        }
+
+        await connectDB();
+
+        // Find all guests in the household
+        const guests = await Guest.find({ householdId: new mongoose.Types.ObjectId(householdId) }).lean();
+
+        if (guests.length === 0) {
+            return { success: false, error: "Семья не найдена" };
+        }
+
+        // Update or create questionnaire for each guest
+        const bulkOps = guests.map(guest => ({
+            updateOne: {
+                filter: { guestId: guest._id },
+                update: {
+                    $set: { wantsSecondDay },
+                    $setOnInsert: { guestId: guest._id }
+                },
+                upsert: true,
+            }
+        }));
+
+        await GuestQuestionnaire.bulkWrite(bulkOps);
+
+        return {
+            success: true,
+            data: {
+                updatedCount: guests.length,
+                updatedAt: new Date().toISOString(),
+            },
+        };
+    } catch (error) {
+        console.error("Household second day update error:", error);
+        return {
+            success: false,
+            error: "Что-то пошло не так. Попробуйте ещё раз.",
+        };
+    }
+}

@@ -1,51 +1,42 @@
 "use client";
 
 import { useState } from "react";
-import { Hotel, Check, X, Info } from "lucide-react";
-
-interface AccommodationSectionProps {
-    guests: { _id: string; guestName: string; isAttending: boolean | null }[];
-    questionnaires: { guestId: string; hasAccommodation: boolean | null }[];
-    isHeadOfHousehold: boolean;
-    onGuestAccommodationChange: (guestId: string, hasAccommodation: boolean) => Promise<void>;
-    onBulkAccommodationChange: (hasAccommodation: boolean) => Promise<void>;
-    isPending: boolean;
-    embedded?: boolean;
-}
+import { CalendarRange, Check, X, Info } from "lucide-react";
+import { SecondDaySectionProps } from "./types";
 
 /**
- * Accommodation section.
- * - HoH: Sets accommodation for ALL family members (single toggle).
- * - Guest: Sets accommodation for themselves (single toggle).
+ * Second day celebration section.
+ * - HoH: Sets preference for ALL family members (single toggle).
+ * - Guest: Sets preference for themselves (single toggle).
  */
-export default function AccommodationSection({
+export default function SecondDaySection({
     guests,
     questionnaires,
     isHeadOfHousehold,
-    onGuestAccommodationChange,
-    onBulkAccommodationChange,
+    onGuestSecondDayChange,
+    onBulkSecondDayChange,
     isPending,
     embedded = false,
-}: AccommodationSectionProps) {
+}: SecondDaySectionProps) {
     const [isUpdating, setIsUpdating] = useState(false);
 
     // Only show attending guests
     const attendingGuests = guests.filter(g => g.isAttending === true);
     if (attendingGuests.length === 0) return null;
 
-    // Determine current accommodation state
-    const anyHasAccommodation = attendingGuests.some(g => {
+    // Determine current state
+    const anyWantsSecondDay = attendingGuests.some(g => {
         const q = questionnaires.find(q => q.guestId === g._id);
-        return q?.hasAccommodation === true;
+        return q?.wantsSecondDay === true;
     });
 
-    const allNoAccommodation = attendingGuests.every(g => {
+    const allWantsNoSecondDay = attendingGuests.every(g => {
         const q = questionnaires.find(q => q.guestId === g._id);
-        return q?.hasAccommodation === false;
+        return q?.wantsSecondDay === false;
     });
 
-    const isYesSelected = anyHasAccommodation;
-    const isNoSelected = !anyHasAccommodation && allNoAccommodation;
+    const isYesSelected = anyWantsSecondDay;
+    const isNoSelected = !anyWantsSecondDay && allWantsNoSecondDay;
 
     const handleSelect = async (value: boolean) => {
         if (isPending || isUpdating) return;
@@ -56,11 +47,11 @@ export default function AccommodationSection({
         setIsUpdating(true);
         try {
             if (isHeadOfHousehold) {
-                await onBulkAccommodationChange(value);
+                await onBulkSecondDayChange(value);
             } else {
                 // Single guest - update self
                 if (guests.length > 0) {
-                    await onGuestAccommodationChange(guests[0]._id, value);
+                    await onGuestSecondDayChange(guests[0]._id, value);
                 }
             }
         } finally {
@@ -77,13 +68,11 @@ export default function AccommodationSection({
     return (
         <div className={containerClasses}>
             <div className="mb-2 flex items-center gap-2">
-                <Hotel className="w-5 h-5 text-gold" />
-                <span className="text-sm font-medium text-charcoal">Размещение</span>
+                <CalendarRange className="w-5 h-5 text-gold" />
+                <span className="text-sm font-medium text-charcoal">Второй день</span>
             </div>
             <p className="mb-4 text-xs text-charcoal/80">
-                {isHeadOfHousehold
-                    ? "Есть ли у вашей семьи где остаться между мероприятиями?"
-                    : "Есть ли где остаться между мероприятиями и после ресторана?"}
+                Хотели бы вы продлить праздник на второй день?
             </p>
 
             <div className="flex gap-3">
@@ -105,7 +94,7 @@ export default function AccommodationSection({
                     `}
                 >
                     <Check size={18} />
-                    <span>Да, есть</span>
+                    <span>Да, с радостью</span>
                 </button>
                 <button
                     type="button"
@@ -130,12 +119,10 @@ export default function AccommodationSection({
             </div>
 
             {/* Helper note */}
-            {isHeadOfHousehold && (
-                <p className="mt-3 flex items-center gap-1.5 text-xs text-muted">
-                    <Info size={14} />
-                    <span>Мы поможем подобрать размещение для всех</span>
-                </p>
-            )}
+            <p className="mt-3 flex items-center gap-1.5 text-xs text-muted/60 italic">
+                <Info size={14} />
+                <span>Это поможет нам в планировании</span>
+            </p>
         </div>
     );
 }

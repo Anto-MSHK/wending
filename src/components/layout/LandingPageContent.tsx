@@ -4,7 +4,6 @@ import { useState, useCallback } from "react";
 import { PersonalGreeting } from "@/components/layout/PersonalGreeting";
 import { GuestQuestionnaireSection } from "@/components/questionnaire/GuestQuestionnaireSection";
 import { HeroSection } from "@/components/layout/HeroSection";
-import { LoveStorySection } from "@/components/sections/LoveStorySection";
 import { ScrollDrivenMap } from "@/components/layout/ScrollDrivenMap";
 import { CalendarSection } from "@/components/layout/CalendarSection";
 import { CountdownTimer } from "@/components/layout/CountdownTimer";
@@ -72,8 +71,6 @@ export function LandingPageContent({
             <CalendarSection />
 
             <CountdownTimer />
-
-            <LoveStorySection />
 
             <GuestQuestionnaireSection
                 guests={updatedGuestsForQuestionnaire}

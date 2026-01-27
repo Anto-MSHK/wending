@@ -27,7 +27,7 @@ export function PersonalGreeting({
     onRSVPUpdate,
 }: PersonalGreetingProps) {
     return (
-        <section className="bg-white min-h-screen flex flex-col justify-center pt-30 pb-40 md:pt-40 md:pb-54 px-6 relative overflow-visible">
+        <section className="bg-white min-h-screen flex flex-col justify-center pt-30 pb-10 md:pt-40 md:pb-54 px-6 relative overflow-visible">
             {/* Top Divider - Absolute */}
             <img
                 src="/images/divider.png"
@@ -97,13 +97,6 @@ export function PersonalGreeting({
                     onUpdate={onRSVPUpdate}
                 />
             </div>
-
-            {/* Bottom Divider - Mirrored & Absolute */}
-            <img
-                src="/images/divider.png"
-                alt="divider"
-                className="absolute bottom-0 left-0 mb-4 w-full h-auto max-h-40 object-contain pointer-events-none opacity-80 scale-y-[-0.85]"
-            />
         </section>
     );
 }
