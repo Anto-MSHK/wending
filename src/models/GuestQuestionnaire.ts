@@ -12,6 +12,8 @@ export interface IGuestQuestionnaire extends Document {
     hasNoAllergies: boolean;
     alcoholPreferences: AlcoholPreference[];
     needsTransfer: boolean | null;
+    hasAccommodation: boolean | null;
+    suggestedTracks: string[];
     createdAt: Date;
     updatedAt: Date;
 }
@@ -51,6 +53,18 @@ const GuestQuestionnaireSchema: Schema<IGuestQuestionnaire> = new Schema(
         needsTransfer: {
             type: Boolean,
             default: null,
+        },
+        hasAccommodation: {
+            type: Boolean,
+            default: null,
+        },
+        suggestedTracks: {
+            type: [String],
+            default: [],
+            validate: {
+                validator: (arr: string[]) => arr.length <= 5,
+                message: 'Maximum 5 tracks allowed',
+            },
         },
     },
     {

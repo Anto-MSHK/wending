@@ -8,10 +8,14 @@ import {
     updateGuestAlcohol,
     updateGuestTransfer,
     updateHouseholdTransfer,
+    updateGuestSuggestedTracks,
+    updateGuestAccommodation,
+    updateHouseholdAccommodation,
 } from "@/actions/questionnaire.actions";
 import { GuestQuestionnaireSectionProps, QuestionnaireData } from "./types";
 import { GuestPreferenceCard } from "./GuestPreferenceCard";
 import { TransferSection } from "./TransferSection";
+import AccommodationSection from "./AccommodationSection";
 
 /**
  * Main questionnaire section that appears after RSVP confirmation.
@@ -47,6 +51,8 @@ export function GuestQuestionnaireSection({
             hasNoAllergies: false,
             alcoholPreferences: [],
             needsTransfer: null,
+            hasAccommodation: null,
+            suggestedTracks: [],
         };
     }, [questionnaires]);
 
@@ -64,6 +70,8 @@ export function GuestQuestionnaireSection({
                     hasNoAllergies: false,
                     alcoholPreferences: [],
                     needsTransfer: null,
+                    hasAccommodation: null,
+                    suggestedTracks: [],
                     ...updates,
                 }];
             }
@@ -150,6 +158,51 @@ export function GuestQuestionnaireSection({
         });
     }, [attendingGuests, householdId, initialQuestionnaires, updateQuestionnaire]);
 
+    const handleSuggestedTracksChange = useCallback(async (guestId: string, suggestedTracks: string[]) => {
+        updateQuestionnaire(guestId, { suggestedTracks });
+
+        startTransition(async () => {
+            const result = await updateGuestSuggestedTracks(guestId, suggestedTracks);
+            if (!result.success) {
+                const original = initialQuestionnaires.find(q => q.guestId === guestId);
+                updateQuestionnaire(guestId, { suggestedTracks: original?.suggestedTracks ?? [] });
+                console.error("Suggested tracks update failed:", result.error);
+            }
+        });
+    }, [initialQuestionnaires, updateQuestionnaire]);
+
+    const handleAccommodationChange = useCallback(async (guestId: string, hasAccommodation: boolean) => {
+        updateQuestionnaire(guestId, { hasAccommodation });
+
+        startTransition(async () => {
+            const result = await updateGuestAccommodation(guestId, hasAccommodation);
+            if (!result.success) {
+                const original = initialQuestionnaires.find(q => q.guestId === guestId);
+                updateQuestionnaire(guestId, { hasAccommodation: original?.hasAccommodation ?? null });
+                console.error("Accommodation update failed:", result.error);
+            }
+        });
+    }, [initialQuestionnaires, updateQuestionnaire]);
+
+    const handleBulkAccommodationChange = useCallback(async (hasAccommodation: boolean) => {
+        // Optimistic update for all attending guests
+        attendingGuests.forEach(g => {
+            updateQuestionnaire(g._id, { hasAccommodation });
+        });
+
+        startTransition(async () => {
+            const result = await updateHouseholdAccommodation(householdId, hasAccommodation);
+            if (!result.success) {
+                // Revert all
+                attendingGuests.forEach(g => {
+                    const original = initialQuestionnaires.find(q => q.guestId === g._id);
+                    updateQuestionnaire(g._id, { hasAccommodation: original?.hasAccommodation ?? null });
+                });
+                console.error("Bulk accommodation update failed:", result.error);
+            }
+        });
+    }, [attendingGuests, householdId, initialQuestionnaires, updateQuestionnaire]);
+
     // Single guest view if not HoH (as requested: "if specific guest... unified form")
     const isSingleGuestView = !isHeadOfHousehold;
 
@@ -188,35 +241,60 @@ export function GuestQuestionnaireSection({
                         onAllergiesChange={handleAllergiesChange}
                         onAlcoholChange={handleAlcoholChange}
                         onTransferChange={handleGuestTransferChange}
+                        onSuggestedTracksChange={handleSuggestedTracksChange}
                         isPending={isPending}
                         showName={!isSingleGuestView}
                     >
-                        {/* Embed Transfer if Single Guest View */}
+                        {/* Embed Transfer and Accommodation if Single Guest View */}
                         {isSingleGuestView && (
-                            <TransferSection
-                                guests={attendingGuests}
-                                questionnaires={questionnaires}
-                                isHeadOfHousehold={isHeadOfHousehold}
-                                onGuestTransferChange={handleGuestTransferChange}
-                                onBulkTransferChange={handleBulkTransferChange}
-                                isPending={isPending}
-                                embedded={true}
-                            />
+                            <>
+                                <TransferSection
+                                    guests={attendingGuests}
+                                    questionnaires={questionnaires}
+                                    isHeadOfHousehold={isHeadOfHousehold}
+                                    onGuestTransferChange={handleGuestTransferChange}
+                                    onBulkTransferChange={handleBulkTransferChange}
+                                    isPending={isPending}
+                                    embedded={true}
+                                />
+                                <div className="mt-6 pt-6 border-t border-muted/20">
+                                    <AccommodationSection
+                                        guests={attendingGuests}
+                                        questionnaires={questionnaires}
+                                        isHeadOfHousehold={isHeadOfHousehold}
+                                        onGuestAccommodationChange={handleAccommodationChange}
+                                        onBulkAccommodationChange={handleBulkAccommodationChange}
+                                        isPending={isPending}
+                                        embedded={true}
+                                    />
+                                </div>
+                            </>
                         )}
                     </GuestPreferenceCard>
                 ))}
 
-                {/* Standalone Transfer if Family View (HoH) */}
+                {/* Standalone Transfer and Accommodation if Family View (HoH) */}
                 {!isSingleGuestView && (
-                    <TransferSection
-                        guests={attendingGuests}
-                        questionnaires={questionnaires}
-                        isHeadOfHousehold={isHeadOfHousehold}
-                        onGuestTransferChange={handleGuestTransferChange}
-                        onBulkTransferChange={handleBulkTransferChange}
-                        isPending={isPending}
-                        embedded={false}
-                    />
+                    <>
+                        <TransferSection
+                            guests={attendingGuests}
+                            questionnaires={questionnaires}
+                            isHeadOfHousehold={isHeadOfHousehold}
+                            onGuestTransferChange={handleGuestTransferChange}
+                            onBulkTransferChange={handleBulkTransferChange}
+                            isPending={isPending}
+                            embedded={false}
+                        />
+                        <AccommodationSection
+                            guests={attendingGuests}
+                            questionnaires={questionnaires}
+                            isHeadOfHousehold={isHeadOfHousehold}
+                            onGuestAccommodationChange={handleAccommodationChange}
+                            onBulkAccommodationChange={handleBulkAccommodationChange}
+                            isPending={isPending}
+                            embedded={false}
+                        />
+                    </>
                 )}
             </div>
         </section>

@@ -60,3 +60,21 @@ export interface GuestTransferResult {
     needsTransfer: boolean;
     updatedAt: string;
 }
+
+/**
+ * Result type for guest suggested tracks updates
+ */
+export interface GuestSuggestedTracksResult {
+    guestId: string;
+    suggestedTracks: string[];
+    updatedAt: string;
+}
+
+/**
+ * Result type for guest accommodation updates
+ */
+export interface GuestAccommodationResult {
+    guestId: string;
+    hasAccommodation: boolean;
+    updatedAt: string;
+}

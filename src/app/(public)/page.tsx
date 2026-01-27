@@ -85,6 +85,8 @@ export default async function LandingPage() {
         hasNoAllergies: q.hasNoAllergies ?? false,
         alcoholPreferences: q.alcoholPreferences ?? [],
         needsTransfer: q.needsTransfer ?? null,
+        hasAccommodation: q.hasAccommodation ?? null,
+        suggestedTracks: q.suggestedTracks ?? [],
     }));
 
     // Display Name Logic

@@ -1,0 +1,172 @@
+'use client';
+
+import React, { useRef, useEffect, useState } from 'react';
+import { VenueInfoCard } from './VenueInfoCard';
+import { VenueMap } from './VenueMap';
+
+interface ScrollDrivenMapProps {
+    className?: string;
+}
+
+export interface Venue {
+    id: string;
+    name: string;
+    title: string; // Brief stage title
+    address: string;
+    time: string;
+    image: string;
+    mapLink: string;
+}
+
+const VENUES: Venue[] = [
+    {
+        id: 'zags',
+        name: 'ЗАГС г. Азов',
+        title: 'Роспись',
+        address: 'ул. Мира, 19/31, Азов',
+        time: '13:00',
+        image: '/images/venues/zags.jpg',
+        mapLink: 'https://yandex.ru/maps/?pt=39.419287,47.107977&z=17&l=map'
+    },
+    {
+        id: 'church',
+        name: 'Храм Азовской иконы Божией Матери',
+        title: 'Венчание',
+        address: 'ул. Макаровского, 25Б, Азов',
+        time: '14:00',
+        image: '/images/venues/church.jpg',
+        mapLink: 'https://yandex.ru/maps/?pt=39.4125,47.1069&z=17&l=map'
+    },
+    {
+        id: 'restaurant',
+        name: 'Ресторан «Шер Хоф»',
+        title: 'Банкет',
+        address: 'Пляжный проезд, 18, Азов',
+        time: '16:00',
+        image: '/images/venues/restaurant.jpeg',
+        mapLink: 'https://yandex.ru/maps/?pt=39.441170,47.111626&z=17&l=map'
+    }
+];
+
+import { DistanceBadge } from './DistanceBadge';
+
+export const ScrollDrivenMap: React.FC<ScrollDrivenMapProps> = ({ className }) => {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [scrollProgress, setScrollProgress] = useState(0);
+    const [activeVenue, setActiveVenue] = useState(0);
+
+    // Badge State
+    const [badgeState, setBadgeState] = useState<{ visible: boolean; type: 'walk' | 'car'; duration: string }>({
+        visible: false, type: 'walk', duration: ''
+    });
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (!containerRef.current) return;
+
+            const rect = containerRef.current.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            const sectionHeight = rect.height;
+
+            // Calculate effective scrollable distance
+            const scrollableDistance = sectionHeight - windowHeight;
+            const scrolled = -rect.top; // How far we've scrolled into the section (starts at 0 when top sticks)
+
+            let progress = 0;
+            if (scrollableDistance > 0) {
+                progress = scrolled / scrollableDistance;
+            }
+
+            // Clamp 0-1
+            progress = Math.max(0, Math.min(1, progress));
+            setScrollProgress(progress);
+
+            // Determine active venue based on skewed thresholds to handle mobile scroll inertia
+            // Stage 1 (ZAGS): 0 - 0.35 (~245vh) - Good buffer but not overwhelming
+            // Stage 2 (Church): 0.35 - 0.68 (~230vh) - Much longer duration
+            // Stage 3 (Restaurant): 0.68 - 1.0 (~225vh) - Much longer duration
+            if (progress < 0.35) {
+                setActiveVenue(0);
+            } else if (progress < 0.68) {
+                setActiveVenue(1);
+            } else {
+                setActiveVenue(2);
+            }
+
+            // Distance Badge Logic
+            // ZAGS -> Church: Transition at 0.35. Badge visible 0.25 - 0.45 (Widened for visibility)
+            if (progress > 0.25 && progress < 0.45) {
+                setBadgeState({ visible: true, type: 'walk', duration: '~5 мин пешком' });
+            }
+            // Church -> Restaurant: Transition at 0.68. Badge visible 0.58 - 0.78 (Widened for visibility)
+            else if (progress > 0.58 && progress < 0.78) {
+                setBadgeState({ visible: true, type: 'car', duration: '~15 мин' });
+            } else {
+                setBadgeState(prev => ({ ...prev, visible: false }));
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        handleScroll();
+
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    return (
+        <section ref={containerRef} className={`relative h-[700vh] ${className || ''}`}>
+            <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center bg-[#FFF8F0] overflow-hidden">
+
+                {/* Debug Overlay - Remove in prod */}
+                {/* <div className="absolute top-4 left-4 bg-black/50 text-white p-2 z-50 rounded">
+          Progress: {scrollProgress.toFixed(2)} | Venue: {activeVenue}
+        </div> */}
+
+                {/* Map Container */}
+                <div className="relative w-full h-full flex items-center justify-center z-0">
+                    <VenueMap activeVenueIndex={activeVenue} />
+                </div>
+
+                {/* Active Stage Title (Top) */}
+                <div className="absolute top-0 w-full z-[2000] pt-4 md:pt-4 text-center pointer-events-none px-4">
+                    <h2
+                        key={activeVenue} // Re-render animation on change
+                        className="font-great-vibes text-6xl md:text-8xl leading-tight animate-fade-in"
+                        style={{
+                            background: 'linear-gradient(180deg, #e9c675 0%, #b48d40 100%)',
+                            WebkitBackgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            backgroundClip: 'text',
+                            WebkitTextStroke: '0.3px rgba(85, 62, 10, 0.5)',
+                            filter: 'drop-shadow(0px 4px 4px rgba(255, 255, 255, 1))'
+                        }}
+                    >
+                        {VENUES[activeVenue].title}
+                    </h2>
+                </div>
+
+                {/* Distance Badge (Centered above marker) */}
+                <div className="absolute top-[15%] md:top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-[8px] md:-translate-y-[100px] z-[2000] pointer-events-none">
+                    <DistanceBadge
+                        type={badgeState.type}
+                        duration={badgeState.duration}
+                        isVisible={badgeState.visible}
+                    />
+                </div>
+
+                {/* Info Card Container */}
+                <div
+                    key={activeVenue} // Triggers animation on change
+                    className="absolute bottom-6 left-1/2 transform -translate-x-1/2 w-[92%] max-w-[400px] md:bottom-12 md:left-12 md:translate-x-0 md:w-[400px] z-[2000] animate-fade-in-up"
+                >
+                    <div className="rounded-xl overflow-hidden shadow-2xl">
+                        <VenueInfoCard venue={VENUES[activeVenue]} />
+                    </div>
+                </div>
+
+                {/* Attribution Cover (White Bar) */}
+                <div className="absolute bottom-0 left-0 w-full h-[14px] bg-white z-[3000] pointer-events-none"></div>
+
+            </div>
+        </section>
+    );
+};

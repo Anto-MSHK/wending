@@ -28,6 +28,8 @@ export interface QuestionnaireData {
     hasNoAllergies: boolean;
     alcoholPreferences: AlcoholPreference[];
     needsTransfer: boolean | null;
+    hasAccommodation: boolean | null;
+    suggestedTracks: string[];
 }
 
 /**
@@ -50,6 +52,7 @@ export interface GuestPreferenceCardProps {
     onAllergiesChange: (guestId: string, allergies: AllergenType[], allergiesOther: string, hasNoAllergies: boolean) => Promise<void>;
     onAlcoholChange: (guestId: string, alcoholPreferences: AlcoholPreference[]) => Promise<void>;
     onTransferChange: (guestId: string, needsTransfer: boolean) => Promise<void>;
+    onSuggestedTracksChange: (guestId: string, tracks: string[]) => Promise<void>;
     isPending: boolean;
     showName?: boolean;
     children?: React.ReactNode;
@@ -82,6 +85,15 @@ export interface AllergyInputProps {
 export interface AlcoholPreferenceButtonsProps {
     selected: AlcoholPreference[];
     onSelect: (preferences: AlcoholPreference[]) => void;
+    disabled?: boolean;
+}
+
+/**
+ * Props for SuggestedTracksInput
+ */
+export interface SuggestedTracksInputProps {
+    tracks: string[];
+    onUpdate: (tracks: string[]) => void;
     disabled?: boolean;
 }
 

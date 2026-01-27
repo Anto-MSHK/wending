@@ -6,10 +6,11 @@ import { GuestPreferenceCardProps } from "./types";
 import { MenuChoiceButtons } from "./MenuChoiceButtons";
 import { AllergyInput } from "./AllergyInput";
 import { AlcoholPreferenceButtons } from "./AlcoholPreferenceButtons";
+import SuggestedTracksInput from "./SuggestedTracksInput";
 
 /**
- * Individual guest preference card containing menu, allergies, and alcohol sections.
- * Supports embedding children (e.g., TransferSection) for single-guest unified layout.
+ * Individual guest preference card containing menu, allergies, alcohol, and tracks sections.
+ * Supports embedding children (e.g., TransferSection, AccommodationSection) for single-guest unified layout.
  * 
  * @see Story 2.4
  */
@@ -19,6 +20,7 @@ export function GuestPreferenceCard({
     onMenuChange,
     onAllergiesChange,
     onAlcoholChange,
+    onSuggestedTracksChange,
     isPending,
     showName = true,
     children,
@@ -28,6 +30,7 @@ export function GuestPreferenceCard({
     const [localAllergiesOther, setLocalAllergiesOther] = useState(questionnaire.allergiesOther);
     const [localHasNoAllergies, setLocalHasNoAllergies] = useState(questionnaire.hasNoAllergies);
     const [localAlcohol, setLocalAlcohol] = useState<AlcoholPreference[]>(questionnaire.alcoholPreferences);
+    const [localTracks, setLocalTracks] = useState<string[]>(questionnaire.suggestedTracks || []);
     const [isUpdating, setIsUpdating] = useState(false);
 
     const showKidsOption = (guest.age ?? 100) < 12;
@@ -78,6 +81,18 @@ export function GuestPreferenceCard({
         }
     }, [guest._id, questionnaire.alcoholPreferences, onAlcoholChange]);
 
+    const handleTracksUpdate = useCallback(async (tracks: string[]) => {
+        setLocalTracks(tracks);
+        setIsUpdating(true);
+        try {
+            await onSuggestedTracksChange(guest._id, tracks);
+        } catch {
+            setLocalTracks(questionnaire.suggestedTracks || []); // Revert on error
+        } finally {
+            setIsUpdating(false);
+        }
+    }, [guest._id, questionnaire.suggestedTracks, onSuggestedTracksChange]);
+
     return (
         <div className="rounded-2xl bg-white p-5 shadow-md">
             {/* Guest Name Header - Optional */}
@@ -123,7 +138,16 @@ export function GuestPreferenceCard({
                 />
             </div>
 
-            {/* Embedded Children (Transfer Section for single guest) */}
+            {/* Suggested Tracks Section */}
+            <div className="mb-8">
+                <SuggestedTracksInput
+                    tracks={localTracks}
+                    onUpdate={handleTracksUpdate}
+                    disabled={disabled}
+                />
+            </div>
+
+            {/* Embedded Children (Transfer, Accommodation sections for single guest) */}
             {children && (
                 <div className="mt-8 pt-6 border-t border-muted/20">
                     {children}

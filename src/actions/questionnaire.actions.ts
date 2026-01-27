@@ -6,6 +6,8 @@ import {
     GuestAllergiesResult,
     GuestAlcoholResult,
     GuestTransferResult,
+    GuestSuggestedTracksResult,
+    GuestAccommodationResult,
 } from "./types";
 import connectDB from "@/lib/db";
 import Guest from "@/models/Guest";
@@ -269,6 +271,156 @@ export async function updateHouseholdTransfer(
         };
     } catch (error) {
         console.error("Household transfer update error:", error);
+        return {
+            success: false,
+            error: "Что-то пошло не так. Попробуйте ещё раз.",
+        };
+    }
+}
+
+/**
+ * Updates a guest's suggested tracks.
+ * Max 5 tracks allowed.
+ */
+export async function updateGuestSuggestedTracks(
+    guestId: string,
+    suggestedTracks: string[]
+): Promise<ActionResponse<GuestSuggestedTracksResult>> {
+    try {
+        if (!mongoose.Types.ObjectId.isValid(guestId)) {
+            return { success: false, error: "Invalid guest ID" };
+        }
+
+        // Validate max 5 tracks
+        if (suggestedTracks.length > 5) {
+            return { success: false, error: "Максимум 5 треков" };
+        }
+
+        // Clean up empty strings and trim
+        const cleanedTracks = suggestedTracks
+            .map(t => t.trim())
+            .filter(t => t.length > 0)
+            .slice(0, 5);
+
+        await connectDB();
+        const questionnaire = await GuestQuestionnaire.findOneAndUpdate(
+            { guestId: new mongoose.Types.ObjectId(guestId) },
+            {
+                $set: { suggestedTracks: cleanedTracks },
+                $setOnInsert: { guestId: new mongoose.Types.ObjectId(guestId) }
+            },
+            { upsert: true, new: true }
+        ).lean();
+
+        return {
+            success: true,
+            data: {
+                guestId,
+                suggestedTracks: questionnaire.suggestedTracks,
+                updatedAt: new Date().toISOString(),
+            },
+        };
+    } catch (error) {
+        console.error("Suggested tracks update error:", error);
+        return {
+            success: false,
+            error: "Что-то пошло не так. Попробуйте ещё раз.",
+        };
+    }
+}
+
+/**
+ * Updates a guest's accommodation status.
+ */
+export async function updateGuestAccommodation(
+    guestId: string,
+    hasAccommodation: boolean
+): Promise<ActionResponse<GuestAccommodationResult>> {
+    try {
+        if (!mongoose.Types.ObjectId.isValid(guestId)) {
+            return { success: false, error: "Invalid guest ID" };
+        }
+
+        if (typeof hasAccommodation !== "boolean") {
+            return { success: false, error: "Invalid accommodation value" };
+        }
+
+        await connectDB();
+        const questionnaire = await GuestQuestionnaire.findOneAndUpdate(
+            { guestId: new mongoose.Types.ObjectId(guestId) },
+            {
+                $set: { hasAccommodation },
+                $setOnInsert: { guestId: new mongoose.Types.ObjectId(guestId) }
+            },
+            { upsert: true, new: true }
+        ).lean();
+
+        return {
+            success: true,
+            data: {
+                guestId,
+                hasAccommodation: questionnaire.hasAccommodation!,
+                updatedAt: new Date().toISOString(),
+            },
+        };
+    } catch (error) {
+        console.error("Accommodation update error:", error);
+        return {
+            success: false,
+            error: "Что-то пошло не так. Попробуйте ещё раз.",
+        };
+    }
+}
+
+/**
+ * Updates accommodation for ALL guests in a household.
+ * Used by Head of Household to set accommodation for entire family.
+ */
+export async function updateHouseholdAccommodation(
+    householdId: string,
+    hasAccommodation: boolean
+): Promise<ActionResponse<{ updatedCount: number; updatedAt: string }>> {
+    try {
+        if (!mongoose.Types.ObjectId.isValid(householdId)) {
+            return { success: false, error: "Invalid household ID" };
+        }
+
+        if (typeof hasAccommodation !== "boolean") {
+            return { success: false, error: "Invalid accommodation value" };
+        }
+
+        await connectDB();
+
+        // Find all guests in the household
+        const guests = await Guest.find({ householdId: new mongoose.Types.ObjectId(householdId) }).lean();
+
+        if (guests.length === 0) {
+            return { success: false, error: "Семья не найдена" };
+        }
+
+        // Update or create questionnaire for each guest
+        const bulkOps = guests.map(guest => ({
+            updateOne: {
+                filter: { guestId: guest._id },
+                update: {
+                    $set: { hasAccommodation },
+                    $setOnInsert: { guestId: guest._id }
+                },
+                upsert: true,
+            }
+        }));
+
+        await GuestQuestionnaire.bulkWrite(bulkOps);
+
+        return {
+            success: true,
+            data: {
+                updatedCount: guests.length,
+                updatedAt: new Date().toISOString(),
+            },
+        };
+    } catch (error) {
+        console.error("Household accommodation update error:", error);
         return {
             success: false,
             error: "Что-то пошло не так. Попробуйте ещё раз.",

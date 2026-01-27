@@ -11,10 +11,16 @@
 
   /* Custom Font Families */
   --font-family-cormorant: 'Cormorant Garamond', serif;
+  --font-family-sans: 'Nunito', sans-serif;
   --font-family-inter: 'Inter', sans-serif;
   --font-family-dynalight: 'Dynalight', cursive;
   --font-family-great-vibes: 'Great Vibes', cursive;
   --font-family-nunito: 'Nunito', sans-serif;
+
+  /* Override Tailwind defaults to Nunito */
+  --font-sans: var(--font-family-nunito);
+  --font-serif: var(--font-family-nunito);
+  --font-mono: var(--font-family-nunito);
 
   /* Custom Animations */
   --animate-fade-in: fade-in 0.6s ease-out;
@@ -30,9 +36,7 @@
   font-family: 'Nunito', sans-serif;
 }
 
-.font-cormorant {
-  font-family: 'Cormorant Garamond', serif;
-}
+
 
 @keyframes fade-in {
   from {
@@ -121,7 +125,7 @@
 }
 
 body {
-  font-family: var(--font-family-inter);
+  font-family: var(--font-family-nunito);
   background-color: var(--color-cream);
   color: var(--color-charcoal);
 }

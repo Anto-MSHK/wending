@@ -5,7 +5,8 @@ import { PersonalGreeting } from "@/components/layout/PersonalGreeting";
 import { GuestQuestionnaireSection } from "@/components/questionnaire/GuestQuestionnaireSection";
 import { HeroSection } from "@/components/layout/HeroSection";
 import { LoveStorySection } from "@/components/sections/LoveStorySection";
-import { RestaurantDetails } from "@/components/layout/RestaurantDetails";
+import { ScrollDrivenMap } from "@/components/layout/ScrollDrivenMap";
+import { CalendarSection } from "@/components/layout/CalendarSection";
 import { CountdownTimer } from "@/components/layout/CountdownTimer";
 import { GuestForRSVP } from "@/components/rsvp/types";
 import { GuestForQuestionnaire, QuestionnaireData } from "@/components/questionnaire/types";
@@ -66,7 +67,9 @@ export function LandingPageContent({
 
 
 
-            <RestaurantDetails />
+            <ScrollDrivenMap />
+
+            <CalendarSection />
 
             <CountdownTimer />
 

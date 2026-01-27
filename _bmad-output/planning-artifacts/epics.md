@@ -148,6 +148,21 @@ So that I get excited and know the logistics.
 **And** They can tap a "View Map" link
 **And** They see a live Countdown Timer ticking down to the event date
 
+### Story 1.5: Interactive Location Roadmap
+
+As a Guest,
+I want to see a simplified map of Azov that moves through wedding venues as I scroll,
+So that I can visually explore the wedding day journey in an engaging, interactive way.
+
+**Acceptance Criteria:**
+
+**Given** The user is on the landing page
+**When** They scroll to the Map section
+**Then** The map section is sticky and pans between venues as user scrolls:
+- ЗАГС (ул. Мира, 19/31) → Храм Азовской иконы (~5 мин пешком) → Ресторан «Шер Хоф» (~15 мин на машине)
+**And** Each venue shows photo, name, time, address, "Показать на Я.Картах" button
+**And** The map is simplified — minimal labels, clean romantic design
+
 ### Epic 2: RSVP & Household Management
 
 **Goal:** Guests can intuitively confirm or decline attendance for themselves and their entire household in a single session.
