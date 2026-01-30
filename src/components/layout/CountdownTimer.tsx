@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { PartyPopper, Clock } from 'lucide-react';
+import { PartyPopper } from 'lucide-react';
 import { WEDDING_CONFIG } from '@/lib/config';
 
 interface TimeLeft {
@@ -57,11 +57,20 @@ export function CountdownTimer() {
     const { days, hours, minutes, seconds } = timeLeft;
 
     return (
-        <section className="py-12 bg-white">
+        <section className="pt-6 bg-white">
             <div className="max-w-4xl mx-auto px-4">
-                <h2 className="text-2xl font-serif text-charcoal text-center mb-8 flex items-center justify-center gap-2">
-                    <Clock className="w-6 h-6 text-gold" />
-                    До свадьбы осталось
+                <h2
+                    className="font-great-vibes text-5xl md:text-7xl leading-tight text-center mb-8"
+                    style={{
+                        background: 'linear-gradient(180deg, #e9c675 0%, #b48d40 100%)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        backgroundClip: 'text',
+                        WebkitTextStroke: '0.3px rgba(85, 62, 10, 0.5)',
+                        filter: 'drop-shadow(0px 4px 4px rgba(255, 255, 255, 1))'
+                    }}
+                >
+                    Увидимся через...
                 </h2>
 
                 <div className="grid grid-cols-4 gap-4 max-w-2xl mx-auto">

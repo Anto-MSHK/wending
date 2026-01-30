@@ -29,7 +29,7 @@ export function PersonalGreeting({
     onRSVPUpdate,
 }: PersonalGreetingProps) {
     return (
-        <section className="bg-white min-h-screen flex flex-col justify-center pt-30 pb-10 md:pt-40 md:pb-54 px-6 relative overflow-visible">
+        <section className="bg-white flex flex-col pt-32 pb-10 md:pt-38 md:pb-12 px-6 relative overflow-visible">
             {/* Top Divider - Absolute */}
             <img
                 src="/images/divider.png"

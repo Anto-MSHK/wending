@@ -68,9 +68,10 @@ export function LandingPageContent({
 
             <ScrollDrivenMap />
 
+            <CountdownTimer />
+
             <CalendarSection />
 
-            <CountdownTimer />
 
             <GuestQuestionnaireSection
                 guests={updatedGuestsForQuestionnaire}

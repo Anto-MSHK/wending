@@ -19,7 +19,8 @@ import { GuestPreferenceCard } from "./GuestPreferenceCard";
 import { TransferSection } from "./TransferSection";
 import AccommodationSection from "./AccommodationSection";
 import SecondDaySection from "./SecondDaySection";
-import { UtensilsCrossed } from "lucide-react";
+// Icon removed
+
 
 /**
  * Main questionnaire section that appears after RSVP confirmation.
@@ -252,16 +253,23 @@ export function GuestQuestionnaireSection({
     return (
         <section
             id="questionnaire"
-            className="animate-fade-in-up mt-8 w-full max-w-2xl mx-auto px-4"
+            className="animate-fade-in-up mt-4 w-full max-w-2xl mx-auto px-4"
             aria-labelledby="questionnaire-heading"
         >
             {/* Section Header */}
             <div className="mb-6 text-center">
                 <h2
                     id="questionnaire-heading"
-                    className="font-cormorant text-2xl font-semibold text-gold flex items-center justify-center gap-2"
+                    className="font-great-vibes text-5xl md:text-7xl leading-tight text-center mb-2"
+                    style={{
+                        background: 'linear-gradient(180deg, #e9c675 0%, #b48d40 100%)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        backgroundClip: 'text',
+                        WebkitTextStroke: '0.3px rgba(85, 62, 10, 0.5)',
+                        filter: 'drop-shadow(0px 4px 4px rgba(255, 255, 255, 1))'
+                    }}
                 >
-                    <UtensilsCrossed size={24} />
                     Несколько вопросов
                 </h2>
                 <p className="mt-1 text-sm text-charcoal/70">

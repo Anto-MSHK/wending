@@ -54,13 +54,13 @@ export function CalendarSection() {
 
                 {/* Top/Bottom Gradients */}
                 <div className="absolute top-0 left-0 right-0 h-16 bg-gradient-to-b from-white to-transparent pointer-events-none z-20" />
-                <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent pointer-events-none z-20" />
+                <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#fff8f0] to-transparent pointer-events-none z-20" />
 
                 {/* Add to Calendar Button - Overlayed on image */}
                 <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30">
                     <button
                         onClick={handleAddToCalendar}
-                        className="inline-flex items-center gap-2 px-6 py-1.5 bg-[#D4AF76] text-white rounded-full font-sans font-medium text-sm hover:bg-[#b8935c] transition-all shadow-lg focus:ring-2 focus:ring-offset-2 focus:ring-[#D4AF76] backdrop-blur-sm bg-[#D4AF76]/90 whitespace-nowrap"
+                        className="inline-flex items-center gap-2 px-6 py-4 bg-[#D4AF76] text-white rounded-full font-sans font-medium text-sm hover:bg-[#b8935c] transition-all shadow-lg focus:ring-2 focus:ring-offset-2 focus:ring-[#D4AF76] backdrop-blur-sm bg-[#D4AF76]/90 whitespace-nowrap"
                     >
                         <Calendar size={16} />
                         Добавить в календарь

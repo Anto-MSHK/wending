@@ -225,6 +225,20 @@ So that the hosts can plan the event according to my needs.
 **And** They can select alcohol preferences (Wine/Champagne/Spirits/Non-alcoholic)
 **And** They can indicate transfer needs per household (Yes/No)
 
+### Story 2.5: Guest Wishes & Messages
+
+As a Guest,
+I want to leave a message or wish for the couple,
+So that I can personalize my RSVP with warm words.
+
+**Acceptance Criteria:**
+
+**Given** The user is on the Questionnaire step
+**When** They reach the "Wishes" section
+**Then** They see a text area for entering a message
+**And** If the user is a Head of Household, they see an option to "Send from the whole family"
+**And** The submitted message is stored and associated with the Guest (or Household)
+
 ### Epic 3: Host Dashboard & Guest Management
 
 **Goal:** The Host can securely access a private dashboard to monitor real-time attendance and manage guest details.

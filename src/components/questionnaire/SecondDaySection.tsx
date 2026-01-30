@@ -63,7 +63,7 @@ export default function SecondDaySection({
 
     const containerClasses = embedded
         ? "" // Embedded - no extra wrapper
-        : "rounded-2xl bg-white p-5 shadow-md"; // Standalone
+        : "rounded-2xl bg-white p-5 shadow-md mb-4"; // Standalone
 
     return (
         <div className={containerClasses}>

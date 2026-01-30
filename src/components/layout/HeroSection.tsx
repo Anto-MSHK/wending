@@ -8,23 +8,30 @@ import Image from 'next/image';
 export function HeroSection() {
     return (
         <section className="relative min-h-screen w-full overflow-hidden bg-white">
-            {/* Main Photo - Full Width */}
-            <div className="absolute inset-0">
+            {/* Main Photo - Centered on Desktop with Gradients */}
+            <div className="absolute inset-x-0 top-0 bottom-0 md:w-3/4 lg:w-3/5 mx-auto">
                 <Image
                     src="/images/hero-photo.jpg"
                     alt="Антон и Ксения"
                     fill
                     className="object-cover object-[center_35%] animate-fade-in-image"
                     priority
-                    sizes="100vw"
+                    sizes="(max-width: 768px) 100vw, 80vw"
                 />
+
+                {/* Horizontal Gradient Overlays for smooth edges on Desktop */}
+                {/* Left Gradient */}
+                <div className="absolute inset-y-0 left-0 w-32 md:w-48 bg-gradient-to-r from-white to-transparent z-10 hidden md:block" />
+                {/* Right Gradient */}
+                <div className="absolute inset-y-0 right-0 w-32 md:w-48 bg-gradient-to-l from-white to-transparent z-10 hidden md:block" />
+
                 {/* Subtle overlay for text readability */}
                 <div className="absolute inset-0 bg-black/10" />
             </div>
 
             {/* Vertical Date - Always on the right */}
             <div className="absolute right-4 md:right-8 lg:right-16 top-[40%] -translate-y-1/2 z-20 flex flex-col items-center">
-                {/* Soft white diffused background */}
+                {/* Soft white diffused background for readability against image/gradient */}
                 <div className="absolute -inset-1 md:-inset-2 lg:-inset-4 bg-white/80 rounded-full blur-xl" />
                 <div
                     className="relative text-6xl md:text-7xl lg:text-8xl xl:text-9xl overflow-visible"
@@ -73,7 +80,7 @@ export function HeroSection() {
             </div>
 
             {/* Bottom gradient for names contrast */}
-            <div className="absolute bottom-0 left-0 right-0 h-[45vh] bg-gradient-to-t from-white via-white/90 to-transparent z-10" />
+            <div className="absolute bottom-0 left-0 right-0 mx-auto w-full md:w-3/4 lg:w-3/5 h-[45vh] bg-gradient-to-t from-white via-white/90 to-transparent z-10" />
 
             {/* Names Image - Bottom Center */}
             <div className="absolute bottom-2 md:bottom-4 left-1/2 -translate-x-1/2 z-20 w-[280px] md:w-[350px] lg:w-[400px] xl:w-[400px] max-w-[600px] animate-fade-in-scale">
