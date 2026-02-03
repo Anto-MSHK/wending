@@ -163,6 +163,22 @@ So that I can visually explore the wedding day journey in an engaging, interacti
 **And** Each venue shows photo, name, time, address, "Показать на Я.Картах" button
 **And** The map is simplified — minimal labels, clean romantic design
 
+### Story 1.6: Scroll-Driven Path Animation
+
+As a Guest,
+I want to see an animated heart moving along curved paths between venues as I scroll,
+So that I can visually experience the wedding day journey in a romantic and engaging way.
+
+**Acceptance Criteria:**
+
+**Given** The user scrolls through the Map section
+**When** They begin scrolling
+**Then** A curved bezier path appears connecting ЗАГС → Храм
+**And** A heart icon moves along this path as the user scrolls
+**When** The heart reaches Храм
+**Then** It stays as a marker and a new path appears to Ресторан
+**And** On further scrolling the heart moves along the second path
+
 ### Epic 2: RSVP & Household Management
 
 **Goal:** Guests can intuitively confirm or decline attendance for themselves and their entire household in a single session.

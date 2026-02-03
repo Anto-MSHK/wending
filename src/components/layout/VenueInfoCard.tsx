@@ -10,23 +10,34 @@ interface VenueInfoCardProps {
 export const VenueInfoCard: React.FC<VenueInfoCardProps> = ({ venue }) => {
     return (
         <div
-            className="bg-white/95 backdrop-blur-md md:rounded-xl overflow-hidden border-t md:border border-[#D4AF76]/30 transition-all duration-500 ease-in-out h-full"
+            className="transition-all duration-500 ease-in-out h-full"
             role="region"
             aria-live="polite"
         >
-            {/* Image */}
-            <div className="relative h-40 w-full">
+            {/* Image - floats above the card with white glow */}
+            <div
+                className="relative w-full flex justify-center"
+                style={{ filter: 'drop-shadow(0 0 20px rgba(255,255,255,0.9))' }}
+            >
                 <Image
                     src={venue.image}
                     alt={venue.name}
-                    fill
-                    className="object-cover"
+                    width={400}
+                    height={200}
+                    className={
+                        venue.image.includes('church')
+                            ? "w-auto h-auto max-w-full max-h-[220px] md:max-h-none"
+                            : "w-full h-auto"
+                    }
                     sizes="(max-width: 640px) 100vw, 400px"
                 />
             </div>
 
-            {/* Content */}
-            <div className="p-4 text-center">
+            {/* Content - has shadow */}
+            <div
+                className="p-4 text-center bg-white rounded-b-xl border border-t-0 border-[#D4AF76]/30"
+                style={{ boxShadow: '0 20px 40px -10px rgba(0,0,0,0.25)' }}
+            >
                 <div className="flex items-center justify-center space-x-2 mb-1">
                     <span className="text-[#D4AF76] font-bold text-lg font-sans">{venue.time}</span>
                 </div>

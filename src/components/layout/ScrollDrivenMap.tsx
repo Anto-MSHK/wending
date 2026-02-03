@@ -25,7 +25,7 @@ const VENUES: Venue[] = [
         title: 'Роспись',
         address: 'ул. Мира, 19/31, Азов',
         time: '13:00',
-        image: '/images/venues/zags.jpg',
+        image: '/images/venues/zags.png',
         mapLink: 'https://yandex.ru/maps/?pt=39.419287,47.107977&z=17&l=map'
     },
     {
@@ -34,7 +34,7 @@ const VENUES: Venue[] = [
         title: 'Венчание',
         address: 'ул. Макаровского, 25Б, Азов',
         time: '14:00',
-        image: '/images/venues/church.jpg',
+        image: '/images/venues/church.png',
         mapLink: 'https://yandex.ru/maps/?pt=39.4125,47.1069&z=17&l=map'
     },
     {
@@ -43,7 +43,7 @@ const VENUES: Venue[] = [
         title: 'Банкет',
         address: 'Пляжный проезд, 18, Азов',
         time: '16:00',
-        image: '/images/venues/restaurant.jpeg',
+        image: '/images/venues/restaurant.png',
         mapLink: 'https://yandex.ru/maps/?pt=39.441170,47.111626&z=17&l=map'
     }
 ];
@@ -52,7 +52,6 @@ import { DistanceBadge } from './DistanceBadge';
 
 export const ScrollDrivenMap: React.FC<ScrollDrivenMapProps> = ({ className }) => {
     const containerRef = useRef<HTMLDivElement>(null);
-    const [scrollProgress, setScrollProgress] = useState(0);
     const [activeVenue, setActiveVenue] = useState(0);
 
     // Badge State
@@ -61,6 +60,9 @@ export const ScrollDrivenMap: React.FC<ScrollDrivenMapProps> = ({ className }) =
     });
 
     useEffect(() => {
+        let lastVenue = 0;
+        let lastBadgeKey = '';
+
         const handleScroll = () => {
             if (!containerRef.current) return;
 
@@ -70,7 +72,7 @@ export const ScrollDrivenMap: React.FC<ScrollDrivenMapProps> = ({ className }) =
 
             // Calculate effective scrollable distance
             const scrollableDistance = sectionHeight - windowHeight;
-            const scrolled = -rect.top; // How far we've scrolled into the section (starts at 0 when top sticks)
+            const scrolled = -rect.top;
 
             let progress = 0;
             if (scrollableDistance > 0) {
@@ -79,37 +81,49 @@ export const ScrollDrivenMap: React.FC<ScrollDrivenMapProps> = ({ className }) =
 
             // Clamp 0-1
             progress = Math.max(0, Math.min(1, progress));
-            setScrollProgress(progress);
 
-            // Determine active venue based on skewed thresholds to handle mobile scroll inertia
-            // Stage 1 (ZAGS): 0 - 0.35 (~245vh) - Good buffer but not overwhelming
-            // Stage 2 (Church): 0.35 - 0.68 (~230vh) - Much longer duration
-            // Stage 3 (Restaurant): 0.68 - 1.0 (~225vh) - Much longer duration
+            // Determine active venue
+            let newVenue = 0;
             if (progress < 0.35) {
-                setActiveVenue(0);
-            } else if (progress < 0.68) {
-                setActiveVenue(1);
+                newVenue = 0;
+            } else if (progress < 0.78) {
+                newVenue = 1;
             } else {
-                setActiveVenue(2);
+                newVenue = 2;
             }
 
-            // Distance Badge Logic
-            // ZAGS -> Church: Transition at 0.35. Badge visible 0.25 - 0.45 (Widened for visibility)
+            // Determine badge state
+            let newBadgeKey = 'hidden';
             if (progress > 0.25 && progress < 0.45) {
-                setBadgeState({ visible: true, type: 'walk', duration: '~5 мин пешком' });
+                newBadgeKey = 'walk';
+            } else if (progress > 0.65 && progress < 0.88) {
+                newBadgeKey = 'car';
             }
-            // Church -> Restaurant: Transition at 0.68. Badge visible 0.58 - 0.78 (Widened for visibility)
-            else if (progress > 0.58 && progress < 0.78) {
-                setBadgeState({ visible: true, type: 'car', duration: '~15 мин' });
-            } else {
-                setBadgeState(prev => ({ ...prev, visible: false }));
+
+            // Only update state when something actually changes (reduces re-renders)
+            if (newVenue !== lastVenue) {
+                lastVenue = newVenue;
+                setActiveVenue(newVenue);
+            }
+
+            if (newBadgeKey !== lastBadgeKey) {
+                lastBadgeKey = newBadgeKey;
+                if (newBadgeKey === 'walk') {
+                    setBadgeState({ visible: true, type: 'walk', duration: '~5 мин пешком' });
+                } else if (newBadgeKey === 'car') {
+                    setBadgeState({ visible: true, type: 'car', duration: '~15 мин' });
+                } else {
+                    setBadgeState(prev => ({ ...prev, visible: false }));
+                }
             }
         };
 
         window.addEventListener('scroll', handleScroll, { passive: true });
         handleScroll();
 
-        return () => window.removeEventListener('scroll', handleScroll);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
     }, []);
 
     return (
@@ -161,7 +175,7 @@ export const ScrollDrivenMap: React.FC<ScrollDrivenMapProps> = ({ className }) =
                     key={activeVenue} // Triggers animation on change
                     className="absolute bottom-6 left-1/2 transform -translate-x-1/2 w-[92%] max-w-[400px] md:bottom-12 md:left-12 md:translate-x-0 md:w-[400px] z-[2000] animate-fade-in-up"
                 >
-                    <div className="rounded-xl overflow-hidden shadow-2xl">
+                    <div className="rounded-xl overflow-visible">
                         <VenueInfoCard venue={VENUES[activeVenue]} />
                     </div>
                 </div>

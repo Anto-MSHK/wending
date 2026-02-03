@@ -2,6 +2,7 @@
 
 import React, { useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
+import { PathOverlay } from './PathOverlay';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
@@ -111,20 +112,23 @@ const VenueMapContent: React.FC<VenueMapContentProps> = ({ activeVenueIndex }) =
                     updateWhenZooming={false}
                 />
 
-                {/* Markers */}
+                {/* Markers - hidden when path overlay shows heart */}
                 {VENUE_COORDS.map((pos, idx) => (
                     /* @ts-ignore */
                     <Marker
                         key={idx}
                         position={pos as L.LatLngExpression}
                         icon={createNumberedIcon(idx + 1)}
-                        opacity={idx === activeVenueIndex ? 1 : 0.6}
+                        opacity={0}
                         zIndexOffset={idx === activeVenueIndex ? 1000 : 0}
                     />
                 ))}
 
                 {/* Controller */}
                 <MapController center={center} />
+
+                {/* Path Overlay with Heart - observes scroll directly */}
+                <PathOverlay />
 
             </MapContainer>
         </div>
