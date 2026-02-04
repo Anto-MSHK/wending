@@ -32,7 +32,7 @@ export function PersonalGreeting({
         <section className="bg-white flex flex-col pt-32 pb-10 md:pt-38 md:pb-12 px-6 relative overflow-visible">
             {/* Top Divider - Absolute */}
             <img
-                src="/images/divider.png"
+                src="/images/divider.webp"
                 alt="divider"
                 className="absolute top-0 left-0 mt-4 w-full h-auto max-h-40 object-contain pointer-events-none opacity-80 scale-y-[0.85] origin-top"
             />

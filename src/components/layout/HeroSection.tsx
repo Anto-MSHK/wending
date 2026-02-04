@@ -11,12 +11,14 @@ export function HeroSection() {
             {/* Main Photo - Centered on Desktop with Gradients */}
             <div className="absolute inset-x-0 top-0 bottom-0 md:w-3/4 lg:w-3/5 mx-auto">
                 <Image
-                    src="/images/hero-photo.jpg"
+                    src="/images/hero-photo-optimized.jpg"
                     alt="Антон и Ксения"
                     fill
                     className="object-cover object-[center_35%] animate-fade-in-image"
                     priority
                     sizes="(max-width: 768px) 100vw, 80vw"
+                    placeholder="blur"
+                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDABQODxIPDRQSEBIXFRQdHx4eHRoaHSQtJSEkMjU1LC0yMi4xODY6NT04Mj4xNUFHSklQTk9iZWJjOEpLb3Jybmb/2wBDARUXFx4aHR4eHWZCMkJmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmb/wAARCAAIAAoDASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAME/8QAIBAAAgEEAgMBAAAAAAAAAAAAAQIDAAQRITFBUWFxof/EABUBAQEAAAAAAAAAAAAAAAAAAAAB/8QAFBEBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8AyWqypamKRgDnOMf1TAywYEZz+1KUH//Z"
                 />
 
                 {/* Horizontal Gradient Overlays for smooth edges on Desktop */}
@@ -85,7 +87,7 @@ export function HeroSection() {
             {/* Names Image - Bottom Center */}
             <div className="absolute bottom-2 md:bottom-4 left-1/2 -translate-x-1/2 z-20 w-[280px] md:w-[350px] lg:w-[400px] xl:w-[400px] max-w-[600px] animate-fade-in-scale">
                 <Image
-                    src="/images/names.png"
+                    src="/images/names.webp"
                     alt="Антон и Ксения"
                     width={500}
                     height={150}

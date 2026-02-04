@@ -30,6 +30,7 @@ export const VenueInfoCard: React.FC<VenueInfoCardProps> = ({ venue }) => {
                             : "w-full h-auto"
                     }
                     sizes="(max-width: 640px) 100vw, 400px"
+                    loading="lazy"
                 />
             </div>
 

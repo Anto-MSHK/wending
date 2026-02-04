@@ -31,18 +31,18 @@ export function CalendarSection() {
     };
 
     return (
-        <section className="relative w-full flex flex-col items-center justify-center gap-10 bg-white overflow-hidden">
+        <section className="relative w-full flex flex-col items-center justify-center gap-10 bg-white overflow-hidden lg:hidden">
             {/* Image Container - Full Width, Natural Height */}
             <div className="relative w-full overflow-hidden group-hover:scale-[1.01] transition-transform duration-700 block">
                 {/* Mobile: slightly offset center (-52%) to visually center the "Friday 8" column if the source image isn't perfectly symmetrical */}
                 <div className="relative w-[176%] md:w-full left-1/2 -translate-x-[48.5%] md:left-0 md:translate-x-0 flex-shrink-0">
                     <Image
-                        src="/calendar.jpg"
+                        src="/calendar-optimized.jpg"
                         alt="Календарь: 8 мая, пятница"
                         width={1000}
                         height={600}
                         className="w-full h-auto object-cover"
-                        priority
+                        loading="lazy"
                     />
                 </div>
 

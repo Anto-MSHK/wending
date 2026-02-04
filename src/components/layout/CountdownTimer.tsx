@@ -57,7 +57,7 @@ export function CountdownTimer() {
     const { days, hours, minutes, seconds } = timeLeft;
 
     return (
-        <section className="pt-6 bg-white">
+        <section className="pt-6 bg-white lg:pb-24">
             <div className="max-w-4xl mx-auto px-4">
                 <h2
                     className="font-great-vibes text-5xl md:text-7xl leading-tight text-center mb-8"

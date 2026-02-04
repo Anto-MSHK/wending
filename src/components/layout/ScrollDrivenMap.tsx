@@ -25,7 +25,7 @@ const VENUES: Venue[] = [
         title: 'Роспись',
         address: 'ул. Мира, 19/31, Азов',
         time: '13:00',
-        image: '/images/venues/zags.png',
+        image: '/images/venues/zags.webp',
         mapLink: 'https://yandex.ru/maps/?pt=39.419287,47.107977&z=17&l=map'
     },
     {
@@ -34,7 +34,7 @@ const VENUES: Venue[] = [
         title: 'Венчание',
         address: 'ул. Макаровского, 25Б, Азов',
         time: '14:00',
-        image: '/images/venues/church.png',
+        image: '/images/venues/church.webp',
         mapLink: 'https://yandex.ru/maps/?pt=39.4125,47.1069&z=17&l=map'
     },
     {
@@ -43,7 +43,7 @@ const VENUES: Venue[] = [
         title: 'Банкет',
         address: 'Пляжный проезд, 18, Азов',
         time: '16:00',
-        image: '/images/venues/restaurant.png',
+        image: '/images/venues/restaurant.webp',
         mapLink: 'https://yandex.ru/maps/?pt=39.441170,47.111626&z=17&l=map'
     }
 ];
@@ -53,11 +53,31 @@ import { DistanceBadge } from './DistanceBadge';
 export const ScrollDrivenMap: React.FC<ScrollDrivenMapProps> = ({ className }) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const [activeVenue, setActiveVenue] = useState(0);
+    const [isMapVisible, setIsMapVisible] = useState(false);
 
     // Badge State
     const [badgeState, setBadgeState] = useState<{ visible: boolean; type: 'walk' | 'car'; duration: string }>({
         visible: false, type: 'walk', duration: ''
     });
+
+    // Lazy load map when section approaches viewport
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsMapVisible(true);
+                    observer.disconnect();
+                }
+            },
+            { rootMargin: '300px' } // Load 300px before it's visible
+        );
+
+        if (containerRef.current) {
+            observer.observe(containerRef.current);
+        }
+
+        return () => observer.disconnect();
+    }, []);
 
     useEffect(() => {
         let lastVenue = 0;
@@ -140,7 +160,13 @@ export const ScrollDrivenMap: React.FC<ScrollDrivenMapProps> = ({ className }) =
 
                 {/* Map Container */}
                 <div className="relative w-full h-full flex items-center justify-center z-0">
-                    <VenueMap activeVenueIndex={activeVenue} />
+                    {isMapVisible ? (
+                        <VenueMap activeVenueIndex={activeVenue} />
+                    ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-[#FFF8F0]">
+                            <span className="text-[#D4AF76] font-serif italic animate-pulse">Загрузка карты...</span>
+                        </div>
+                    )}
                 </div>
 
                 {/* Active Stage Title (Top) */}
