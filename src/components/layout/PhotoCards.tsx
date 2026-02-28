@@ -14,7 +14,7 @@ const photos = [
 export function PhotoCards() {
     return (
         <section
-            className="pt-8 md:pt-16 pb-8 md:pb-12 w-full relative z-20 -mb-16 md:-mb-24"
+            className="pt-6 md:pt-12 pb-8 md:pb-12 w-full relative z-20 -mb-16 md:-mb-24"
             style={{
                 background: 'linear-gradient(to bottom, #000 0%, #000 20%, #fff 50%, #fff 100%)',
                 overflowX: 'clip',

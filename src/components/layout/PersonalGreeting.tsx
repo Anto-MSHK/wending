@@ -39,10 +39,7 @@ export function PersonalGreeting({
                         {isFamily ? 'ДОРОГАЯ СЕМЬЯ' : (guestGender === 'female' ? 'Дорогая' : 'Дорогой')}
                     </p>
                     <h2
-                        className="font-great-vibes text-6xl md:text-7xl lg:text-8xl leading-tight"
-                        style={{
-                            color: '#3D3D3D',
-                        }}
+                        className="font-great-vibes text-6xl md:text-7xl lg:text-8xl leading-tight text-gold"
                     >
                         {guestName}
                     </h2>
@@ -59,11 +56,8 @@ export function PersonalGreeting({
                     </p>
 
                     <p
-                        className="text-4xl md:text-5xl font-bold tracking-widest my-4"
-                        style={{
-                            fontFamily: '"Kindentosca", cursive',
-                            color: '#3D3D3D',
-                        }}
+                        className="text-6xl md:text-7xl my-4 text-gold tracking-normal"
+                        style={{ fontFamily: '"Great Vibes", cursive' }}
                     >
                         {WEDDING_CONFIG.DATE.split('-').reverse().join('.')}
                     </p>
