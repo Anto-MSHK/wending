@@ -60,12 +60,7 @@ export function RestaurantDetails() {
                 <h2
                     className="font-great-vibes text-6xl md:text-7xl lg:text-8xl text-charcoal mb-6 leading-tight"
                     style={{
-                        background: 'linear-gradient(180deg, #e9c675 0%, #b48d40 100%)',
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                        backgroundClip: 'text',
-                        WebkitTextStroke: '0.3px rgba(85, 62, 10, 0.5)',
-                        textShadow: '2px 2px 8px rgba(85, 62, 10, 0.3)',
+                        color: '#3D3D3D',
                         marginLeft: '-0.5rem'
                     }}
                 >

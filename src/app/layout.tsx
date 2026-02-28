@@ -15,7 +15,7 @@ export default function RootLayout({
     <html lang="ru">
       <head>
         <link
-          href="https://fonts.googleapis.com/css2?family=Dynalight&family=Great+Vibes:wght@400&family=Nunito:wght@300;400;500;600&display=swap&subset=cyrillic,latin"
+          href="https://fonts.googleapis.com/css2?family=Dynalight&family=Poiret+One&family=Nunito:wght@300;400;500;600&display=swap&subset=cyrillic,latin"
           rel="stylesheet"
         />
       </head>

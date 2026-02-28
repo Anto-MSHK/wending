@@ -11,10 +11,10 @@ export function HeroSection() {
             {/* Main Photo - Centered on Desktop with Gradients */}
             <div className="absolute inset-x-0 top-0 bottom-0 md:w-3/4 lg:w-3/5 mx-auto">
                 <Image
-                    src="/images/hero-photo-optimized.jpg"
+                    src="/images/hero-photo_new.jpg"
                     alt="Антон и Ксения"
                     fill
-                    className="object-cover object-[center_35%] animate-fade-in-image"
+                    className="object-cover object-[25%_35%] md:object-[center_35%] animate-fade-in-image"
                     priority
                     sizes="(max-width: 768px) 100vw, 80vw"
                     placeholder="blur"
@@ -32,66 +32,40 @@ export function HeroSection() {
             </div>
 
             {/* Vertical Date - Always on the right */}
-            <div className="absolute right-4 md:right-8 lg:right-16 top-[40%] -translate-y-1/2 z-20 flex flex-col items-center">
-                {/* Soft white diffused background for readability against image/gradient */}
-                <div className="absolute -inset-1 md:-inset-2 lg:-inset-4 bg-white/80 rounded-full blur-xl" />
+            <div className="absolute right-8 md:right-16 lg:right-24 top-[65%] -translate-y-1/2 z-20 flex flex-col items-center">
                 <div
-                    className="relative text-6xl md:text-7xl lg:text-8xl xl:text-9xl overflow-visible"
+                    className="relative text-6xl md:text-7xl lg:text-8xl xl:text-9xl overflow-visible text-center leading-[0.9]"
                     style={{
-                        fontFamily: '"Dynalight", cursive',
+                        fontFamily: '"Poiret One", cursive',
                         fontWeight: 400,
+                        color: '#ffffff',
                     }}
                 >
-                    <span
-                        className="block mb-1 md:mb-2 animate-fade-in-up-delay-1"
-                        style={{
-                            textIndent: '0.1em',
-                            background: 'linear-gradient(180deg, #e9c675 0%, #b48d40 100%)',
-                            WebkitBackgroundClip: 'text',
-                            WebkitTextFillColor: 'transparent',
-                            backgroundClip: 'text',
-                            WebkitTextStroke: '0.3px rgba(85, 62, 10, 0.5)',
-                            textShadow: '2px 2px 8px rgba(85, 62, 10, 0.3)'
-                        }}
-                    >08</span>
-                    <span
-                        className="block mb-1 md:mb-2 animate-fade-in-up-delay-2"
-                        style={{
-                            textIndent: '0.1em',
-                            background: 'linear-gradient(180deg, #e9c675 0%, #b48d40 100%)',
-                            WebkitBackgroundClip: 'text',
-                            WebkitTextFillColor: 'transparent',
-                            backgroundClip: 'text',
-                            WebkitTextStroke: '0.3px rgba(85, 62, 10, 0.5)',
-                            textShadow: '2px 2px 8px rgba(85, 62, 10, 0.3)'
-                        }}
-                    >05</span>
-                    <span
-                        className="block animate-fade-in-up-delay-3"
-                        style={{
-                            textIndent: '0.1em',
-                            background: 'linear-gradient(180deg, #e9c675 0%, #b48d40 100%)',
-                            WebkitBackgroundClip: 'text',
-                            WebkitTextFillColor: 'transparent',
-                            backgroundClip: 'text',
-                            WebkitTextStroke: '0.3px rgba(85, 62, 10, 0.5)',
-                            textShadow: '2px 2px 8px rgba(85, 62, 10, 0.3)'
-                        }}
-                    >26</span>
+                    <span className="block animate-fade-in-up-delay-1">
+                        <span className="inline-block w-[0.75em] text-left mr-0" style={{ transform: 'scaleX(0.78)', transformOrigin: 'left' }}>0</span>
+                        <span className="inline-block w-[0.65em] text-left">8</span>
+                    </span>
+                    <span className="block animate-fade-in-up-delay-2">
+                        <span className="inline-block w-[0.75em] text-left mr-0" style={{ transform: 'scaleX(0.78)', transformOrigin: 'left' }}>0</span>
+                        <span className="inline-block w-[0.65em] text-left">5</span>
+                    </span>
+                    <span className="block animate-fade-in-up-delay-3">
+                        <span className="inline-block w-[0.75em] text-left mr-0">2</span>
+                        <span className="inline-block w-[0.65em] text-left">6</span>
+                    </span>
                 </div>
             </div>
 
-            {/* Bottom gradient for names contrast */}
-            <div className="absolute bottom-0 left-0 right-0 mx-auto w-full md:w-3/4 lg:w-3/5 h-[45vh] bg-gradient-to-t from-white via-white/90 to-transparent z-10" />
+            <div className="absolute bottom-0 left-0 right-0 mx-auto w-full md:w-3/4 lg:w-3/5 h-[25vh] bg-gradient-to-t from-black via-black/30 to-transparent z-10" />
 
             {/* Names Image - Bottom Center */}
-            <div className="absolute bottom-2 md:bottom-4 left-1/2 -translate-x-1/2 z-20 w-[280px] md:w-[350px] lg:w-[400px] xl:w-[400px] max-w-[600px] animate-fade-in-scale">
+            <div className="absolute bottom-8 md:bottom-10 left-1/2 -translate-x-1/2 z-20 w-[350px] md:w-[450px] lg:w-[500px] xl:w-[550px] max-w-[600px] animate-fade-in-scale">
                 <Image
-                    src="/images/names.webp"
+                    src="/images/names_new.png"
                     alt="Антон и Ксения"
                     width={500}
                     height={150}
-                    className="w-full h-auto drop-shadow-[0_1px_2px_#e9c675]"
+                    className="w-full h-auto"
                     priority
                 />
             </div>

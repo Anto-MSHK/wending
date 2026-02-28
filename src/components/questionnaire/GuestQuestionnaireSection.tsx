@@ -262,12 +262,7 @@ export function GuestQuestionnaireSection({
                     id="questionnaire-heading"
                     className="font-great-vibes text-5xl md:text-7xl leading-tight text-center mb-2"
                     style={{
-                        background: 'linear-gradient(180deg, #e9c675 0%, #b48d40 100%)',
-                        WebkitBackgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                        backgroundClip: 'text',
-                        WebkitTextStroke: '0.3px rgba(85, 62, 10, 0.5)',
-                        filter: 'drop-shadow(0px 4px 4px rgba(255, 255, 255, 1))'
+                        color: '#3D3D3D',
                     }}
                 >
                     Несколько вопросов

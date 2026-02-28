@@ -175,12 +175,7 @@ export const ScrollDrivenMap: React.FC<ScrollDrivenMapProps> = ({ className }) =
                         key={activeVenue} // Re-render animation on change
                         className="font-great-vibes text-6xl md:text-8xl leading-tight animate-fade-in"
                         style={{
-                            background: 'linear-gradient(180deg, #e9c675 0%, #b48d40 100%)',
-                            WebkitBackgroundClip: 'text',
-                            WebkitTextFillColor: 'transparent',
-                            backgroundClip: 'text',
-                            WebkitTextStroke: '0.3px rgba(85, 62, 10, 0.5)',
-                            filter: 'drop-shadow(0px 4px 4px rgba(255, 255, 255, 1))'
+                            color: '#3D3D3D',
                         }}
                     >
                         {VENUES[activeVenue].title}

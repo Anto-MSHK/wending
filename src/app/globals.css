@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'Kindentosca';
+  src: url('/fonts/Kindentosca.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
   /* Custom Colors */
   --color-blush: #F8B4C0;
@@ -14,7 +22,7 @@
   --font-family-sans: 'Nunito', sans-serif;
   --font-family-inter: 'Inter', sans-serif;
   --font-family-dynalight: 'Dynalight', cursive;
-  --font-family-great-vibes: 'Great Vibes', cursive;
+  --font-family-great-vibes: 'Kindentosca', cursive;
   --font-family-nunito: 'Nunito', sans-serif;
 
   /* Override Tailwind defaults to Nunito */
@@ -29,7 +37,8 @@
 
 /* Explicit fallback utilities to ensure fonts apply */
 .font-great-vibes {
-  font-family: 'Great Vibes', cursive;
+  font-family: 'Kindentosca', cursive;
+  -webkit-text-stroke: 0.5px currentColor;
 }
 
 .font-nunito {

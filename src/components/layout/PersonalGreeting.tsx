@@ -29,13 +29,8 @@ export function PersonalGreeting({
     onRSVPUpdate,
 }: PersonalGreetingProps) {
     return (
-        <section className="bg-white flex flex-col pt-32 pb-10 md:pt-38 md:pb-12 px-6 relative overflow-visible">
-            {/* Top Divider - Absolute */}
-            <img
-                src="/images/divider.webp"
-                alt="divider"
-                className="absolute top-0 left-0 mt-4 w-full h-auto max-h-40 object-contain pointer-events-none opacity-80 scale-y-[0.85] origin-top"
-            />
+        <section className="bg-white flex flex-col pt-12 pb-10 md:pt-38 md:pb-12 px-6 relative overflow-visible">
+
 
             <div className="max-w-2xl mx-auto text-center motion-safe:animate-fade-in relative z-10">
                 {/* Greeting Header */}
@@ -46,12 +41,7 @@ export function PersonalGreeting({
                     <h2
                         className="font-great-vibes text-6xl md:text-7xl lg:text-8xl leading-tight"
                         style={{
-                            background: 'linear-gradient(180deg, #e9c675 0%, #b48d40 100%)',
-                            WebkitBackgroundClip: 'text',
-                            WebkitTextFillColor: 'transparent',
-                            backgroundClip: 'text',
-                            WebkitTextStroke: '0.3px rgba(85, 62, 10, 0.5)',
-                            textShadow: '2px 2px 8px rgba(85, 62, 10, 0.3)'
+                            color: '#3D3D3D',
                         }}
                     >
                         {guestName}
@@ -71,13 +61,8 @@ export function PersonalGreeting({
                     <p
                         className="text-4xl md:text-5xl font-bold tracking-widest my-4"
                         style={{
-                            fontFamily: '"Dynalight", cursive',
-                            background: 'linear-gradient(180deg, #e9c675 0%, #b48d40 100%)',
-                            WebkitBackgroundClip: 'text',
-                            WebkitTextFillColor: 'transparent',
-                            backgroundClip: 'text',
-                            WebkitTextStroke: '0px transparent',
-                            textShadow: '1px 1px 6px rgba(85, 62, 10, 0.25)'
+                            fontFamily: '"Kindentosca", cursive',
+                            color: '#3D3D3D',
                         }}
                     >
                         {WEDDING_CONFIG.DATE.split('-').reverse().join('.')}
