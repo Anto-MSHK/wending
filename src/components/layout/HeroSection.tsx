@@ -9,7 +9,7 @@ export function HeroSection() {
     return (
         <section className="relative min-h-screen w-full overflow-hidden bg-white">
             {/* Main Photo - Centered on Desktop with Gradients */}
-            <div className="absolute inset-x-0 top-0 bottom-0 md:w-3/4 lg:w-3/5 mx-auto">
+            <div className="absolute inset-0">
                 <Image
                     src="/images/hero-photo_new.jpg"
                     alt="Антон и Ксения"
@@ -22,7 +22,7 @@ export function HeroSection() {
                 />
 
                 {/* Decorative Frame - sits above the names */}
-                <div className="absolute top-4 md:top-8 inset-x-4 md:inset-x-8 bottom-[18vh] md:bottom-[16vh] z-20 pointer-events-none">
+                <div className="absolute top-4 md:top-8 inset-x-4 md:inset-x-8 bottom-[18vh] md:bottom-[28vh] z-20 pointer-events-none">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                         src="/images/frame.svg"
@@ -31,18 +31,14 @@ export function HeroSection() {
                     />
                 </div>
 
-                {/* Horizontal Gradient Overlays for smooth edges on Desktop */}
-                {/* Left Gradient */}
-                <div className="absolute inset-y-0 left-0 w-32 md:w-48 bg-gradient-to-r from-white to-transparent z-10 hidden md:block" />
-                {/* Right Gradient */}
-                <div className="absolute inset-y-0 right-0 w-32 md:w-48 bg-gradient-to-l from-white to-transparent z-10 hidden md:block" />
+
 
                 {/* Subtle overlay for text readability */}
                 <div className="absolute inset-0 bg-black/10" />
             </div>
 
             {/* Vertical Date - inside the frame, bottom-right area */}
-            <div className="absolute right-10 md:right-20 lg:right-28 xl:right-36 bottom-[22vh] md:bottom-[22vh] z-30 flex flex-col items-center">
+            <div className="absolute right-10 md:right-12 lg:right-16 xl:right-20 bottom-[22vh] md:bottom-[30vh] z-30 flex flex-col items-center">
                 <div
                     className="relative text-[4.55rem] sm:text-[5.85rem] md:text-[6.5rem] lg:text-[7.8rem] xl:text-[9.1rem] overflow-visible text-center leading-[0.9]"
                     style={{
@@ -67,7 +63,7 @@ export function HeroSection() {
                 </div>
             </div>
 
-            <div className="absolute bottom-0 left-0 right-0 mx-auto w-full md:w-3/4 lg:w-3/5 h-[25vh] bg-gradient-to-t from-black via-black/30 to-transparent z-10" />
+            <div className="absolute bottom-0 left-0 right-0 w-full h-[25vh] bg-gradient-to-t from-black via-black/30 to-transparent z-10" />
 
             {/* Names Text - Below the frame */}
             <div className="absolute bottom-[6vh] md:bottom-[4vh] left-1/2 -translate-x-1/2 z-20 w-full animate-fade-in-scale flex flex-col items-center">

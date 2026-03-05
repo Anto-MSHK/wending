@@ -86,7 +86,6 @@ export default async function LandingPage() {
         alcoholPreferences: q.alcoholPreferences ?? [],
         needsTransfer: q.needsTransfer ?? null,
         hasAccommodation: q.hasAccommodation ?? null,
-        wantsSecondDay: q.wantsSecondDay ?? null,
         suggestedTracks: q.suggestedTracks ?? [],
     }));
 

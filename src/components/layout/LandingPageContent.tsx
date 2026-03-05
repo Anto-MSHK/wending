@@ -6,6 +6,7 @@ import { GuestQuestionnaireSection } from "@/components/questionnaire/GuestQuest
 import { HeroSection } from "@/components/layout/HeroSection";
 import { ScrollDrivenMap } from "@/components/layout/ScrollDrivenMap";
 import { CalendarSection } from "@/components/layout/CalendarSection";
+import { QuoteSection } from "@/components/layout/QuoteSection";
 import { CountdownTimer } from "@/components/layout/CountdownTimer";
 import { PhotoCards } from "@/components/layout/PhotoCards";
 import { GuestForRSVP } from "@/components/rsvp/types";
@@ -74,6 +75,8 @@ export function LandingPageContent({
             <CountdownTimer />
 
             <CalendarSection />
+
+            <QuoteSection />
 
 
             <GuestQuestionnaireSection

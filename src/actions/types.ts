@@ -78,11 +78,3 @@ export interface GuestAccommodationResult {
     hasAccommodation: boolean;
     updatedAt: string;
 }
-/**
- * Result type for guest second day updates
- */
-export interface GuestSecondDayResult {
-    guestId: string;
-    wantsSecondDay: boolean;
-    updatedAt: string;
-}

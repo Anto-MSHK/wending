@@ -1,10 +1,22 @@
 "use client";
 
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { Calendar } from "lucide-react";
 
 export function CalendarSection() {
     const handleAddToCalendar = () => {
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+        const isMac = navigator.userAgent.includes('Macintosh');
+
+        if (isIOS || isMac) {
+            handleAppleCalendar();
+        } else {
+            handleGoogleCalendar();
+        }
+    };
+
+    const handleAppleCalendar = () => {
         const icsContent = [
             "BEGIN:VCALENDAR",
             "VERSION:2.0",
@@ -28,6 +40,11 @@ export function CalendarSection() {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+    };
+
+    const handleGoogleCalendar = () => {
+        const url = "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Свадьба+Антона+и+Ксении&dates=20260508T100000Z/20260508T200000Z&details=Будем+рады+видеть+вас+на+нашей+свадьбе!&location=Азов";
+        window.open(url, "_blank");
     };
 
     return (
@@ -57,7 +74,7 @@ export function CalendarSection() {
                 <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-[#fff8f0] to-transparent pointer-events-none z-20" />
 
                 {/* Add to Calendar Button - Overlayed on image */}
-                <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30">
+                <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center">
                     <button
                         onClick={handleAddToCalendar}
                         className="inline-flex items-center gap-2 px-6 py-4 bg-[#D4AF76] text-white rounded-full font-sans font-medium text-sm hover:bg-[#b8935c] transition-all shadow-lg focus:ring-2 focus:ring-offset-2 focus:ring-[#D4AF76] backdrop-blur-sm bg-[#D4AF76]/90 whitespace-nowrap"

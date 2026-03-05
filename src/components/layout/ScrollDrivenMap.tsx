@@ -24,7 +24,7 @@ const VENUES: Venue[] = [
         name: 'ЗАГС г. Азов',
         title: 'Роспись',
         address: 'ул. Мира, 19/31, Азов',
-        time: '13:00',
+        time: '13:20',
         image: '/images/venues/zags.webp',
         mapLink: 'https://yandex.ru/maps/?pt=39.419287,47.107977&z=17&l=map'
     },
@@ -33,7 +33,7 @@ const VENUES: Venue[] = [
         name: 'Храм Азовской иконы Божией Матери',
         title: 'Венчание',
         address: 'ул. Макаровского, 25Б, Азов',
-        time: '14:00',
+        time: '14:10',
         image: '/images/venues/church.webp',
         mapLink: 'https://yandex.ru/maps/?pt=39.4125,47.1069&z=17&l=map'
     },
@@ -42,7 +42,7 @@ const VENUES: Venue[] = [
         name: 'Ресторан «Шер Хоф»',
         title: 'Банкет',
         address: 'Пляжный проезд, 18, Азов',
-        time: '16:00',
+        time: '16:30',
         image: '/images/venues/restaurant.webp',
         mapLink: 'https://yandex.ru/maps/?pt=39.441170,47.111626&z=17&l=map'
     }
