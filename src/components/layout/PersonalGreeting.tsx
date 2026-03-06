@@ -36,7 +36,9 @@ export function PersonalGreeting({
                 {/* Greeting Header */}
                 <div className="mb-4 mt-4">
                     <p className="font-nunito font-bold text-xl md:text-2xl text-charcoal/60 mb-2 uppercase tracking-widest">
-                        {isFamily ? 'ДОРОГАЯ СЕМЬЯ' : (guestGender === 'female' ? 'Дорогая' : 'Дорогой')}
+                        {isFamily
+                            ? (householdName.trim() ? 'ДОРОГАЯ СЕМЬЯ' : 'ДОРОГИЕ')
+                            : (guestGender === 'female' ? 'Дорогая' : 'Дорогой')}
                     </p>
                     <h2
                         className="font-great-vibes text-6xl md:text-7xl lg:text-8xl leading-tight text-gold"

@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
                     const { members, ...hData } = item;
                     const household = await Household.create({
                         ...hData,
-                        householdName: hData.householdName || 'New Household'
+                        householdName: (hData.householdName && hData.householdName !== '?' && hData.householdName !== 'БЕЗ СЕМЬИ') ? hData.householdName : ''
                     });
                     results.householdsCreated++;
 

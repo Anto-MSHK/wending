@@ -35,8 +35,8 @@ export default async function LandingPage() {
         ? await Household.findById(guest.householdId).lean()
         : null;
 
-    // Determine if this guest is Head of Household
-    const isHeadOfHousehold = guest.isHeadOfHousehold && !!household?.householdName;
+    // Determine if this guest is Head of Household (either family name exists OR it is a nominal family)
+    const isHeadOfHousehold = guest.isHeadOfHousehold && household !== null;
 
     // Build guest lists based on role
     let householdGuests;
@@ -58,7 +58,16 @@ export default async function LandingPage() {
     }));
 
     // Display Name Logic
-    const displayName = household?.householdName || guest.guestName;
+    let displayName = household?.householdName || guest.guestName;
+
+    // If it's a "nominal family" (household exists but name is empty), join all guest names
+    if (household && !household.householdName.trim() && isHeadOfHousehold) {
+        const names = householdGuests.map(g => g.guestName);
+        if (names.length > 1) {
+            const last = names.pop();
+            displayName = `${names.join(', ')} и ${last}`;
+        }
+    }
 
     // Build questionnaire guest list (guest info only)
     const guestsForQuestionnaire = householdGuests.map((g) => ({

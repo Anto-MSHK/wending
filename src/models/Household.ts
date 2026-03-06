@@ -14,11 +14,9 @@ const HouseholdSchema: Schema<IHousehold> = new Schema(
     {
         householdName: {
             type: String,
-            required: [true, 'Household name is required'],
+            required: false,
             trim: true,
         },
-        // inviteToken moved to Guest model
-
         addressLine: {
             type: String,
             trim: true,
@@ -43,7 +41,10 @@ const HouseholdSchema: Schema<IHousehold> = new Schema(
 );
 
 
-// Prevent model recompilation during hot reloads
+// Prevent model recompilation during hot reloads, but force update in development
+if (process.env.NODE_ENV === 'development') {
+    delete mongoose.models.Household;
+}
 const Household: Model<IHousehold> = mongoose.models.Household || mongoose.model<IHousehold>('Household', HouseholdSchema);
 
 export default Household;
