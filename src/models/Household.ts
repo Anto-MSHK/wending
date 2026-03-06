@@ -42,8 +42,6 @@ const HouseholdSchema: Schema<IHousehold> = new Schema(
     }
 );
 
-// Create index on inviteToken for fast lookups
-HouseholdSchema.index({ inviteToken: 1 });
 
 // Prevent model recompilation during hot reloads
 const Household: Model<IHousehold> = mongoose.models.Household || mongoose.model<IHousehold>('Household', HouseholdSchema);

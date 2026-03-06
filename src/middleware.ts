@@ -14,8 +14,8 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-// UUID v4 regex pattern
-const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+// Token validation: 8-char short token OR full UUID v4
+const TOKEN_REGEX = /^([0-9a-f]{8}|[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12})$/i;
 
 export function middleware(request: NextRequest) {
     const { pathname, searchParams } = request.nextUrl;
@@ -42,7 +42,7 @@ export function middleware(request: NextRequest) {
     }
 
     // 3. Validation
-    if (!token || !UUID_REGEX.test(token)) {
+    if (!token || !TOKEN_REGEX.test(token)) {
         return NextResponse.redirect(new URL('/error', request.url));
     }
 

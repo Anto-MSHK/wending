@@ -30,20 +30,17 @@ export default async function LandingPage() {
         redirect('/error');
     }
 
-    // Fetch the household for context
-    const household = await Household.findById(guest.householdId).lean();
-
-    if (!household) {
-        console.error(`Household not found for guest ${guest._id}`);
-        redirect('/error');
-    }
+    // Fetch the household for context (if exists)
+    const household = guest.householdId
+        ? await Household.findById(guest.householdId).lean()
+        : null;
 
     // Determine if this guest is Head of Household
     const isHeadOfHousehold = guest.isHeadOfHousehold && !!household?.householdName;
 
     // Build guest lists based on role
     let householdGuests;
-    if (isHeadOfHousehold) {
+    if (isHeadOfHousehold && household) {
         // Head of Household sees all family members
         householdGuests = await Guest.find({
             householdId: guest.householdId,
@@ -60,6 +57,9 @@ export default async function LandingPage() {
         isAttending: g.isAttending ?? null,
     }));
 
+    // Display Name Logic
+    const displayName = household?.householdName || guest.guestName;
+
     // Build questionnaire guest list (guest info only)
     const guestsForQuestionnaire = householdGuests.map((g) => ({
         _id: g._id.toString(),
@@ -67,7 +67,7 @@ export default async function LandingPage() {
         age: g.age,
         isAttending: g.isAttending ?? null,
         isHeadOfHousehold: g.isHeadOfHousehold,
-        householdId: g.householdId.toString(),
+        householdId: g.householdId?.toString() || '',
     }));
 
     // Fetch questionnaire data for all relevant guests
@@ -89,9 +89,6 @@ export default async function LandingPage() {
         suggestedTracks: q.suggestedTracks ?? [],
     }));
 
-    // Display Name Logic
-    const displayName = isHeadOfHousehold ? household.householdName : guest.guestName;
-
     return (
         <LandingPageContent
             guestName={displayName}
@@ -100,8 +97,8 @@ export default async function LandingPage() {
             guestsForRSVP={guestsForRSVP}
             guestsForQuestionnaire={guestsForQuestionnaire}
             questionnairesData={questionnairesData}
-            householdName={household.householdName || ''}
-            householdId={household._id.toString()}
+            householdName={household?.householdName || ''}
+            householdId={household?._id?.toString() || ''}
             isHeadOfHousehold={isHeadOfHousehold}
         />
     );

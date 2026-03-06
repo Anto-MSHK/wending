@@ -30,7 +30,7 @@ const GuestSchema: Schema<IGuest> = new Schema(
             type: String,
             required: true,
             unique: true,
-            default: () => uuidv4(),
+            default: () => uuidv4().split('-')[0],
         },
         isHeadOfHousehold: {
             type: Boolean,
@@ -51,7 +51,7 @@ const GuestSchema: Schema<IGuest> = new Schema(
         householdId: {
             type: Schema.Types.ObjectId,
             ref: 'Household',
-            required: [true, 'Household ID is required'],
+            required: false,
         },
     },
     {
