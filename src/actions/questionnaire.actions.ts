@@ -17,6 +17,7 @@ import GuestQuestionnaire, {
     AlcoholPreference
 } from "@/models/GuestQuestionnaire";
 import mongoose from "mongoose";
+import { isRateLimited } from "@/lib/rate-limiter";
 
 /**
  * Gets or creates a questionnaire document for a guest.
@@ -39,6 +40,10 @@ export async function updateGuestMenu(
     menuChoice: MenuChoice
 ): Promise<ActionResponse<GuestMenuResult>> {
     try {
+        if (isRateLimited(guestId)) {
+            return { success: false, error: "Слишком много запросов. Подождите немного." };
+        }
+
         if (!mongoose.Types.ObjectId.isValid(guestId)) {
             return { success: false, error: "Invalid guest ID" };
         }
@@ -83,6 +88,10 @@ export async function updateGuestAllergies(
     hasNoAllergies: boolean
 ): Promise<ActionResponse<GuestAllergiesResult>> {
     try {
+        if (isRateLimited(guestId)) {
+            return { success: false, error: "Слишком много запросов. Подождите немного." };
+        }
+
         if (!mongoose.Types.ObjectId.isValid(guestId)) {
             return { success: false, error: "Invalid guest ID" };
         }
@@ -132,6 +141,10 @@ export async function updateGuestAlcohol(
     alcoholPreferences: AlcoholPreference[]
 ): Promise<ActionResponse<GuestAlcoholResult>> {
     try {
+        if (isRateLimited(guestId)) {
+            return { success: false, error: "Слишком много запросов. Подождите немного." };
+        }
+
         if (!mongoose.Types.ObjectId.isValid(guestId)) {
             return { success: false, error: "Invalid guest ID" };
         }
@@ -187,6 +200,10 @@ export async function updateGuestTransfer(
     needsTransfer: boolean
 ): Promise<ActionResponse<GuestTransferResult>> {
     try {
+        if (isRateLimited(guestId)) {
+            return { success: false, error: "Слишком много запросов. Подождите немного." };
+        }
+
         if (!mongoose.Types.ObjectId.isValid(guestId)) {
             return { success: false, error: "Invalid guest ID" };
         }
@@ -231,6 +248,10 @@ export async function updateHouseholdTransfer(
     needsTransfer: boolean
 ): Promise<ActionResponse<{ updatedCount: number; updatedAt: string }>> {
     try {
+        if (isRateLimited(householdId)) {
+            return { success: false, error: "Слишком много запросов. Подождите немного." };
+        }
+
         if (!mongoose.Types.ObjectId.isValid(householdId)) {
             return { success: false, error: "Invalid household ID" };
         }
@@ -287,6 +308,10 @@ export async function updateGuestSuggestedTracks(
     suggestedTracks: string[]
 ): Promise<ActionResponse<GuestSuggestedTracksResult>> {
     try {
+        if (isRateLimited(guestId)) {
+            return { success: false, error: "Слишком много запросов. Подождите немного." };
+        }
+
         if (!mongoose.Types.ObjectId.isValid(guestId)) {
             return { success: false, error: "Invalid guest ID" };
         }
@@ -337,6 +362,10 @@ export async function updateGuestAccommodation(
     hasAccommodation: boolean
 ): Promise<ActionResponse<GuestAccommodationResult>> {
     try {
+        if (isRateLimited(guestId)) {
+            return { success: false, error: "Слишком много запросов. Подождите немного." };
+        }
+
         if (!mongoose.Types.ObjectId.isValid(guestId)) {
             return { success: false, error: "Invalid guest ID" };
         }
@@ -381,6 +410,10 @@ export async function updateHouseholdAccommodation(
     hasAccommodation: boolean
 ): Promise<ActionResponse<{ updatedCount: number; updatedAt: string }>> {
     try {
+        if (isRateLimited(householdId)) {
+            return { success: false, error: "Слишком много запросов. Подождите немного." };
+        }
+
         if (!mongoose.Types.ObjectId.isValid(householdId)) {
             return { success: false, error: "Invalid household ID" };
         }

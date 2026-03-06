@@ -10,7 +10,7 @@ export function RestaurantDetails() {
         { src: '/restaurant/res_1.jpg', alt: 'Интерьер Scher Hof 1' },
         { src: '/restaurant/res_2.jpeg', alt: 'Интерьер Scher Hof 2' },
         { src: '/restaurant/res_3.jpg', alt: 'Интерьер Scher Hof 3' },
-        { src: '/restaurant/res_4.png', alt: 'Интерьер Scher Hof 4' },
+        { src: '/restaurant/res_4.webp', alt: 'Интерьер Scher Hof 4' },
     ];
 
     const [currentSlide, setCurrentSlide] = useState(0);

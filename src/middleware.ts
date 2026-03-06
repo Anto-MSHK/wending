@@ -67,7 +67,19 @@ export function middleware(request: NextRequest) {
     return response;
 }
 
-// Exclude Next.js internal routes, static files, and API routes
+// Exclude Next.js internal routes, static files, public assets, and API routes
 export const config = {
-    matcher: ['/((?!_next/static|_next/image|favicon.ico|api|error).*)'],
+    matcher: [
+        /*
+         * Match all request paths except for the ones starting with:
+         * - api (API routes)
+         * - _next/static (static files)
+         * - _next/image (image optimization files)
+         * - favicon.ico, sitemap.xml, robots.txt (metadata files)
+         * - images/ (public images directory)
+         * - fonts/ (public fonts directory)
+         * - error (error page)
+         */
+        '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|images|fonts|error).*)',
+    ],
 };

@@ -9,6 +9,7 @@ import { CalendarSection } from "@/components/layout/CalendarSection";
 import { QuoteSection } from "@/components/layout/QuoteSection";
 import { CountdownTimer } from "@/components/layout/CountdownTimer";
 import { PhotoCards } from "@/components/layout/PhotoCards";
+import { EnvelopeAnimation } from "@/components/EnvelopeAnimation";
 import { GuestForRSVP } from "@/components/rsvp/types";
 import { GuestForQuestionnaire, QuestionnaireData } from "@/components/questionnaire/types";
 
@@ -54,6 +55,7 @@ export function LandingPageContent({
 
     return (
         <main lang="ru">
+            <EnvelopeAnimation />
             <HeroSection />
 
             <PhotoCards />

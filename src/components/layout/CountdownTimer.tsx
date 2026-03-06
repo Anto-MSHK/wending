@@ -48,7 +48,7 @@ export function CountdownTimer() {
         };
 
         calculateTimeLeft();
-        const timer = setInterval(calculateTimeLeft, 1000);
+        const timer = setInterval(calculateTimeLeft, 60000);
 
         return () => clearInterval(timer);
     }, []);
@@ -75,7 +75,7 @@ export function CountdownTimer() {
             {/* Hands photo background */}
             <div className="relative w-full" style={{ minHeight: '55vh' }}>
                 <Image
-                    src="/images/hands.jpg"
+                    src="/images/hands.webp"
                     alt="Руки"
                     fill
                     className="object-cover object-center"

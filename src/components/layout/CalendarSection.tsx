@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React from "react";
 import Image from "next/image";
 import { Calendar } from "lucide-react";
 
@@ -54,7 +54,7 @@ export function CalendarSection() {
                 {/* Mobile: slightly offset center (-52%) to visually center the "Friday 8" column if the source image isn't perfectly symmetrical */}
                 <div className="relative w-[176%] md:w-full left-1/2 -translate-x-[48.5%] md:left-0 md:translate-x-0 flex-shrink-0">
                     <Image
-                        src="/calendar-optimized.jpg"
+                        src="/images/calendar-optimized.webp"
                         alt="Календарь: 8 мая, пятница"
                         width={1000}
                         height={600}

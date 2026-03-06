@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { MapContainer, TileLayer, Marker, useMap } from 'react-leaflet';
 import { PathOverlay } from './PathOverlay';
 import 'leaflet/dist/leaflet.css';
@@ -19,25 +19,18 @@ const VENUE_COORDS = [
 const MapController = ({ center }: { center: L.LatLngExpression }) => {
     const map = useMap();
 
-    useEffect(() => {
-        // Determine offset based on screen width
-        // Mobile: Card covers bottom ~40-50%, so we want the venue in the top 50%.
-        // To move the venue UP, we must move the map center DOWN (South).
-        // Latitude offset: roughly -0.002 for mobile zoom 16.
-
+    React.useEffect(() => {
         let target = center;
         if (typeof window !== 'undefined' && window.innerWidth < 768) {
             if (Array.isArray(center)) {
-                // center is [lat, lng]
                 // @ts-ignore
                 target = [center[0] - 0.002, center[1]];
             }
         }
 
-        // Use panTo instead of flyTo to avoid zoom-out/zoom-in loading gaps
         map.panTo(target as L.LatLngExpression, {
             animate: true,
-            duration: 3.0, // Slower, smoother transition
+            duration: 3.0,
             easeLinearity: 0.25
         });
     }, [map, center]);
@@ -45,37 +38,28 @@ const MapController = ({ center }: { center: L.LatLngExpression }) => {
     return null;
 };
 
-const VenueMapContent: React.FC<VenueMapContentProps> = ({ activeVenueIndex }) => {
-    // Fix Leaflet icons
-    useEffect(() => {
-        // @ts-ignore
-        delete L.Icon.Default.prototype._getIconUrl;
-        // @ts-ignore
-        L.Icon.Default.mergeOptions({
-            iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
-            iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
-            shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
-        });
-    }, []);
-
-    // Custom Gold Pin Icon (CSS-based)
-    const createNumberedIcon = (num: number) => new L.DivIcon({
-        className: 'custom-venue-icon',
-        html: `
-            <div class="relative flex flex-col items-center hover:scale-110 transition-transform duration-300">
-                <div class="w-10 h-10 bg-[#D4AF76] rounded-full border-2 border-white shadow-lg flex items-center justify-center relative z-10">
-                    <span class="text-white font-serif font-bold text-lg leading-none">${num}</span>
-                </div>
-                <div class="w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[8px] border-t-[#D4AF76] -mt-[1px]"></div>
-                <div class="w-8 h-2 bg-black/20 blur-sm rounded-full mt-1"></div>
+// Custom Gold Pin Icon - module-scope for performance (no re-creation per render)
+const createNumberedIcon = (num: number) => new L.DivIcon({
+    className: 'custom-venue-icon',
+    html: `
+        <div class="relative flex flex-col items-center hover:scale-110 transition-transform duration-300">
+            <div class="w-10 h-10 bg-[#D4AF76] rounded-full border-2 border-white shadow-lg flex items-center justify-center relative z-10">
+                <span class="text-white font-serif font-bold text-lg leading-none">${num}</span>
             </div>
-        `,
-        iconSize: [40, 50],
-        iconAnchor: [20, 50], // Tip of the pin (Bottom Center)
-        popupAnchor: [0, -50],
-    });
+            <div class="w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[8px] border-t-[#D4AF76] -mt-[1px]"></div>
+            <div class="w-8 h-2 bg-black/20 blur-sm rounded-full mt-1"></div>
+        </div>
+    `,
+    iconSize: [40, 50],
+    iconAnchor: [20, 50],
+    popupAnchor: [0, -50],
+});
 
+const VenueMapContent: React.FC<VenueMapContentProps> = ({ activeVenueIndex }) => {
+    // Custom Gold Pin Icon (CSS-based) - defined at module scope for perf
     const center = VENUE_COORDS[activeVenueIndex] as L.LatLngExpression;
+
+
 
     return (
         <div className="w-full h-full">

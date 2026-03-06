@@ -11,7 +11,7 @@ export function HeroSection() {
             {/* Main Photo - Centered on Desktop with Gradients */}
             <div className="absolute inset-0">
                 <Image
-                    src="/images/hero-photo_new.jpg"
+                    src="/images/hero-photo_new.webp"
                     alt="Антон и Ксения"
                     fill
                     className="object-cover object-[25%_35%] md:object-[center_35%] animate-fade-in-image"

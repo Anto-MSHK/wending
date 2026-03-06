@@ -1,9 +1,9 @@
 import Image from 'next/image';
 
 const photos = [
-    { src: '/images/DSC_7451-1.jpg', alt: 'Антон и Ксения', rotate: '-12deg', translateY: '15px', zIndex: 10 },
-    { src: '/images/DSC_7751-15.jpg', alt: 'Антон и Ксения', rotate: '2deg', translateY: '-20px', zIndex: 20 },
-    { src: '/images/DSC_7775-18.jpg', alt: 'Антон и Ксения', rotate: '14deg', translateY: '15px', zIndex: 10 },
+    { src: '/images/DSC_7451-1.webp', alt: 'Антон и Ксения', rotate: '-12deg', translateY: '15px', zIndex: 10 },
+    { src: '/images/DSC_7751-15.webp', alt: 'Антон и Ксения', rotate: '2deg', translateY: '-20px', zIndex: 20 },
+    { src: '/images/DSC_7775-18.webp', alt: 'Антон и Ксения', rotate: '14deg', translateY: '15px', zIndex: 10 },
 ];
 
 /**

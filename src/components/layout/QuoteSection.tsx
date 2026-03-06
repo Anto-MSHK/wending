@@ -9,7 +9,7 @@ export function QuoteSection() {
             <div className="relative w-full" style={{ minHeight: '65vh' }}>
                 {/* Photo */}
                 <Image
-                    src="/images/DSC_7709.jpg"
+                    src="/images/DSC_7709.webp"
                     alt="Антон и Ксения"
                     fill
                     className="object-cover object-center"

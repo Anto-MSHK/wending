@@ -4,6 +4,7 @@ import { ActionResponse, GuestUpdateResult } from "./types";
 import connectDB from "@/lib/db";
 import Guest from "@/models/Guest";
 import mongoose from "mongoose";
+import { isRateLimited } from "@/lib/rate-limiter";
 
 /**
  * Updates a single guest's RSVP attendance status.
@@ -18,6 +19,11 @@ export async function updateGuestRsvp(
     isAttending: boolean
 ): Promise<ActionResponse<GuestUpdateResult>> {
     try {
+        // Rate limit check
+        if (isRateLimited(guestId)) {
+            return { success: false, error: "Слишком много запросов. Подождите немного." };
+        }
+
         // 1. Validate guestId format
         if (!mongoose.Types.ObjectId.isValid(guestId)) {
             return { success: false, error: "Invalid guest ID" };
