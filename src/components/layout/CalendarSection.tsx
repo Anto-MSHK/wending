@@ -17,6 +17,8 @@ export function CalendarSection() {
     };
 
     const handleAppleCalendar = () => {
+        const description = "Будем рады видеть вас на нашей свадьбе!\\n\\nРасписание:\\n13:20 - Роспись (ЗАГС г. Азов)\\n14:10 - Венчание (Храм Азовской иконы Божией Матери)\\n16:30 - Банкет (Ресторан «Шер Хоф»)";
+
         const icsContent = [
             "BEGIN:VCALENDAR",
             "VERSION:2.0",
@@ -27,7 +29,7 @@ export function CalendarSection() {
             "DTSTART;VALUE=DATE:20260508",
             "DTEND;VALUE=DATE:20260509",
             "SUMMARY:Свадьба Антона и Ксении",
-            "DESCRIPTION:Будем рады видеть вас на нашей свадьбе!",
+            `DESCRIPTION:${description}`,
             "LOCATION:Азов",
             "END:VEVENT",
             "END:VCALENDAR"
@@ -43,7 +45,12 @@ export function CalendarSection() {
     };
 
     const handleGoogleCalendar = () => {
-        const url = "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Свадьба+Антона+и+Ксении&dates=20260508T100000Z/20260508T200000Z&details=Будем+рады+видеть+вас+на+нашей+свадьбе!&location=Азов";
+        const description = "Будем рады видеть вас на нашей свадьбе!\n\nРасписание:\n13:20 - Роспись (ЗАГС г. Азов)\n14:10 - Венчание (Храм Азовской иконы Божией Матери)\n16:30 - Банкет (Ресторан «Шер Хоф»)";
+        const encodedDescription = encodeURIComponent(description);
+        const encodedTitle = encodeURIComponent("Свадьба Антона и Ксении");
+        const encodedLocation = encodeURIComponent("Азов");
+
+        const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodedTitle}&dates=20260508T100000Z/20260508T200000Z&details=${encodedDescription}&location=${encodedLocation}`;
         window.open(url, "_blank");
     };
 
