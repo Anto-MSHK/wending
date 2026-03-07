@@ -58,14 +58,18 @@ export default async function LandingPage() {
     }));
 
     // Display Name Logic
-    let displayName = household?.householdName || guest.guestName;
+    let displayName = guest.guestName;
 
-    // If it's a "nominal family" (household exists but name is empty), join all guest names
-    if (household && !household.householdName.trim() && isHeadOfHousehold) {
-        const names = householdGuests.map(g => g.guestName);
-        if (names.length > 1) {
-            const last = names.pop();
-            displayName = `${names.join(', ')} и ${last}`;
+    // If the guest is the head of household, use household name or join all names
+    if (isHeadOfHousehold && household) {
+        if (household.householdName.trim()) {
+            displayName = household.householdName;
+        } else {
+            const names = householdGuests.map(g => g.guestName);
+            if (names.length > 1) {
+                const last = names.pop();
+                displayName = `${names.join(', ')} и ${last}`;
+            }
         }
     }
 
