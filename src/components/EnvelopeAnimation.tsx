@@ -255,17 +255,21 @@ export function EnvelopeAnimation() {
             {/* ── Wax Seal ── */}
             {(phase === "closed" || phase === "unsealing") && (
                 <div
-                    className={`absolute left-1/2 top-[52%] -translate-x-1/2 -translate-y-1/2 z-[4] ${phase === "unsealing" ? "envelope-seal-off" : ""
+                    className={`absolute left-1/2 top-[52%] -translate-x-1/2 -translate-y-1/2 z-[4] flex items-center justify-center ${phase === "unsealing" ? "envelope-seal-off" : ""
                         }`}
                     onAnimationEnd={
                         phase === "unsealing" ? handleSealEnd : undefined
                     }
                 >
+                    {/* Safe shadow for iOS Safari to prevent square WebP shadow artifacts */}
+                    <div
+                        className="absolute w-[130px] h-[130px] rounded-full pointer-events-none z-[10]"
+                        style={{ boxShadow: "0 8px 16px rgba(60, 45, 35, 0.45), 0 3px 8px rgba(60, 45, 35, 0.3)", transform: "translateY(2px)" }}
+                    />
                     <img
                         src="/images/seal.webp"
                         alt="Seal"
                         className="w-[200px] h-[200px] object-contain pointer-events-none relative z-[11]"
-                        style={{ filter: "drop-shadow(0 8px 16px rgba(60, 45, 35, 0.45)) drop-shadow(0 3px 6px rgba(60, 45, 35, 0.3))" }}
                     />
                 </div>
             )}

@@ -14,7 +14,6 @@ import {
 } from "@/actions/questionnaire.actions";
 import { GuestQuestionnaireSectionProps, QuestionnaireData } from "./types";
 import { GuestPreferenceCard } from "./GuestPreferenceCard";
-import { TransferSection } from "./TransferSection";
 import AccommodationSection from "./AccommodationSection";
 // Icon removed
 
@@ -249,18 +248,9 @@ export function GuestQuestionnaireSection({
                         isPending={isPending}
                         showName={!isSingleGuestView}
                     >
-                        {/* Embed Transfer and Accommodation if Single Guest View */}
+                        {/* Embed Accommodation if Single Guest View */}
                         {isSingleGuestView && (
                             <>
-                                <TransferSection
-                                    guests={attendingGuests}
-                                    questionnaires={questionnaires}
-                                    isHeadOfHousehold={isHeadOfHousehold}
-                                    onGuestTransferChange={handleGuestTransferChange}
-                                    onBulkTransferChange={handleBulkTransferChange}
-                                    isPending={isPending}
-                                    embedded={true}
-                                />
                                 <AccommodationSection
                                     guests={attendingGuests}
                                     questionnaires={questionnaires}
@@ -275,18 +265,9 @@ export function GuestQuestionnaireSection({
                     </GuestPreferenceCard>
                 ))}
 
-                {/* Standalone Transfer and Accommodation if Family View (HoH) */}
+                {/* Standalone Accommodation if Family View (HoH) */}
                 {!isSingleGuestView && (
                     <>
-                        <TransferSection
-                            guests={attendingGuests}
-                            questionnaires={questionnaires}
-                            isHeadOfHousehold={isHeadOfHousehold}
-                            onGuestTransferChange={handleGuestTransferChange}
-                            onBulkTransferChange={handleBulkTransferChange}
-                            isPending={isPending}
-                            embedded={false}
-                        />
                         <AccommodationSection
                             guests={attendingGuests}
                             questionnaires={questionnaires}
