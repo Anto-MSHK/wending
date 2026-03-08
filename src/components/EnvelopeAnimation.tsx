@@ -97,51 +97,21 @@ export function EnvelopeAnimation() {
     const isPostSeal = phase === "opening" || phase === "separating";
     const isSep = phase === "separating";
 
-    /* ─── Premium SVG Shadows + Texture for iOS Safari ─── */
-    // iOS Safari has a bug where `filter: drop-shadow` combined with `transform: rotateX` makes the element disappear.
-    // By baking both texture and shadow natively into the SVG filter, we bypass the bug and preserve the exact 1:1 look.
-    const PaperShadowDef = ({
-        id, dx1, dy1, sd1, a1, dx2, dy2, sd2, a2
-    }: {
-        id: string, dx1: number, dy1: number, sd1: number, a1: number, dx2: number, dy2: number, sd2: number, a2: number
-    }) => (
-        <filter id={id} x="-20%" y="-20%" width="140%" height="140%" colorInterpolationFilters="sRGB">
-            {/* 1. Texture Generation */}
-            <feTurbulence type="fractalNoise" baseFrequency="0.04 0.02" numOctaves="2" result="noise" />
-            <feColorMatrix type="matrix" values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0   0 0 0 0.03 0" in="noise" result="coloredNoise" />
+    /* ─── Premium Mobile-Safe Shadows ─── */
+    // iOS Safari completely drops SVGs if their computed filter bounding box exceeds max texture limits (typically 4096px).
+    // Our SVG flaps extend to 400vw/200vh to maintain intersection angles, making standard SVG filters crash the iOS engine.
+    // Solution: Pure CSS tiled overlay for texture, isolated CSS drop-shadows on wrapper elements.
+    const shadowLeft = "drop-shadow(3px 2px 10px rgba(92, 74, 61, 0.15)) drop-shadow(1px 1px 3px rgba(92, 74, 61, 0.1))";
+    const shadowRight = "drop-shadow(-3px 2px 10px rgba(92, 74, 61, 0.15)) drop-shadow(-1px 1px 3px rgba(92, 74, 61, 0.1))";
+    const shadowBottom = "drop-shadow(0 -3px 12px rgba(92, 74, 61, 0.15)) drop-shadow(0 -1px 4px rgba(92, 74, 61, 0.1))";
+    const shadowTop = "drop-shadow(0 4px 14px rgba(92, 74, 61, 0.18)) drop-shadow(0 1px 6px rgba(92, 74, 61, 0.12))";
 
-            <feTurbulence type="fractalNoise" baseFrequency="0.1 0.05" numOctaves="1" result="grain" />
-            <feColorMatrix type="matrix" values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0   0 0 0 0.02 0" in="grain" result="darkGrain" />
-
-            <feMerge result="combinedNoise">
-                <feMergeNode in="coloredNoise" />
-                <feMergeNode in="darkGrain" />
-            </feMerge>
-
-            {/* 2. Apply texture to graphic */}
-            <feComposite operator="in" in="combinedNoise" in2="SourceGraphic" result="clippedNoise" />
-            <feBlend mode="multiply" in="SourceGraphic" in2="clippedNoise" result="textured" />
-
-            {/* 3. Drop Shadow 1 */}
-            <feGaussianBlur in="SourceAlpha" stdDeviation={sd1} result="blur1" />
-            <feOffset dx={dx1} dy={dy1} in="blur1" result="offsetBlur1" />
-            <feFlood floodColor={`rgba(92, 74, 61, ${a1})`} result="flood1" />
-            <feComposite operator="in" in="flood1" in2="offsetBlur1" result="shadow1" />
-
-            {/* 4. Drop Shadow 2 */}
-            <feGaussianBlur in="SourceAlpha" stdDeviation={sd2} result="blur2" />
-            <feOffset dx={dx2} dy={dy2} in="blur2" result="offsetBlur2" />
-            <feFlood floodColor={`rgba(92, 74, 61, ${a2})`} result="flood2" />
-            <feComposite operator="in" in="flood2" in2="offsetBlur2" result="shadow2" />
-
-            {/* 5. Merge Shadows behind textured graphic */}
-            <feMerge>
-                <feMergeNode in="shadow1" />
-                <feMergeNode in="shadow2" />
-                <feMergeNode in="textured" />
-            </feMerge>
-        </filter>
-    );
+    // A tiny repeatable SVG noise tile that won't blow up the GPU.
+    const paperTextureStyle = {
+        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E")`,
+        mixBlendMode: "multiply" as const,
+        pointerEvents: "none" as const,
+    };
 
     return (
         <div
@@ -150,56 +120,66 @@ export function EnvelopeAnimation() {
             onWheel={(e) => e.preventDefault()}
             onTouchMove={(e) => e.preventDefault()}
         >
+            {/* ── Background texture overlay ── */}
+            {/* 
+              This adds the paper texture to the entire envelope container. 
+              Because it's a CSS background pattern, iOS renders it instantly without calculating huge SVG filter bounds.
+            */}
+            <div
+                className={`absolute inset-0 z-[10] opacity-60 transition-opacity duration-500 pointer-events-none ${isPostSeal ? "opacity-0" : ""}`}
+                style={paperTextureStyle}
+            />
+
             {/* ── Left flap ── */}
             <div className={`absolute inset-0 ${isSep ? "envelope-part-left" : ""}`}>
-                <svg
-                    className="absolute inset-0 w-full h-full"
-                    viewBox="0 0 100 100"
-                    preserveAspectRatio="none"
-                    overflow="visible"
-                >
-                    <defs>
-                        <PaperShadowDef id="ptLeft" dx1={3} dy1={2} sd1={5} a1={0.15} dx2={1} dy2={1} sd2={1.5} a2={0.1} />
-                        <linearGradient id="gradLeft" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stopColor="#FFFFFF" />
-                            <stop offset="100%" stopColor="#EDEDED" />
-                        </linearGradient>
-                    </defs>
-                    <path
-                        d="M -150 -50 L -150 150 L 44 56 Q 50 50 44 44 Z"
-                        fill="url(#gradLeft)"
-                        filter="url(#ptLeft)"
-                        stroke="rgba(255,255,255,0.7)"
-                        strokeWidth="0.4"
-                        strokeLinejoin="round"
-                    />
-                </svg>
+                <div className="absolute inset-0 w-full h-full" style={{ filter: shadowLeft, transform: "translateZ(0)" }}>
+                    <svg
+                        className="absolute inset-0 w-full h-full"
+                        viewBox="0 0 100 100"
+                        preserveAspectRatio="none"
+                        overflow="visible"
+                    >
+                        <defs>
+                            <linearGradient id="gradLeft" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stopColor="#FFFFFF" />
+                                <stop offset="100%" stopColor="#EDEDED" />
+                            </linearGradient>
+                        </defs>
+                        <path
+                            d="M -150 -50 L -150 150 L 44 56 Q 50 50 44 44 Z"
+                            fill="url(#gradLeft)"
+                            stroke="rgba(255,255,255,0.7)"
+                            strokeWidth="0.4"
+                            strokeLinejoin="round"
+                        />
+                    </svg>
+                </div>
             </div>
 
             {/* ── Right flap ── */}
             <div className={`absolute inset-0 ${isSep ? "envelope-part-right" : ""}`}>
-                <svg
-                    className="absolute inset-0 w-full h-full"
-                    viewBox="0 0 100 100"
-                    preserveAspectRatio="none"
-                    overflow="visible"
-                >
-                    <defs>
-                        <PaperShadowDef id="ptRight" dx1={-3} dy1={2} sd1={5} a1={0.15} dx2={-1} dy2={1} sd2={1.5} a2={0.1} />
-                        <linearGradient id="gradRight" x1="100%" y1="0%" x2="0%" y2="0%">
-                            <stop offset="0%" stopColor="#FFFFFF" />
-                            <stop offset="100%" stopColor="#EDEDED" />
-                        </linearGradient>
-                    </defs>
-                    <path
-                        d="M 250 -50 L 250 150 L 56 56 Q 50 50 56 44 Z"
-                        fill="url(#gradRight)"
-                        filter="url(#ptRight)"
-                        stroke="rgba(255,255,255,0.7)"
-                        strokeWidth="0.4"
-                        strokeLinejoin="round"
-                    />
-                </svg>
+                <div className="absolute inset-0 w-full h-full" style={{ filter: shadowRight, transform: "translateZ(0)" }}>
+                    <svg
+                        className="absolute inset-0 w-full h-full"
+                        viewBox="0 0 100 100"
+                        preserveAspectRatio="none"
+                        overflow="visible"
+                    >
+                        <defs>
+                            <linearGradient id="gradRight" x1="100%" y1="0%" x2="0%" y2="0%">
+                                <stop offset="0%" stopColor="#FFFFFF" />
+                                <stop offset="100%" stopColor="#EDEDED" />
+                            </linearGradient>
+                        </defs>
+                        <path
+                            d="M 250 -50 L 250 150 L 56 56 Q 50 50 56 44 Z"
+                            fill="url(#gradRight)"
+                            stroke="rgba(255,255,255,0.7)"
+                            strokeWidth="0.4"
+                            strokeLinejoin="round"
+                        />
+                    </svg>
+                </div>
             </div>
 
             {/* ── Bottom flap ── */}
@@ -207,28 +187,28 @@ export function EnvelopeAnimation() {
                 className={`absolute inset-0 z-[1] ${isSep ? "envelope-part-down" : ""}`}
                 onAnimationEnd={isSep ? handleSeparateEnd : undefined}
             >
-                <svg
-                    className="absolute inset-0 w-full h-full"
-                    viewBox="0 0 100 100"
-                    preserveAspectRatio="none"
-                    overflow="visible"
-                >
-                    <defs>
-                        <PaperShadowDef id="ptBottom" dx1={0} dy1={-3} sd1={6} a1={0.15} dx2={0} dy2={-1} sd2={2} a2={0.1} />
-                        <linearGradient id="gradBottom" x1="0%" y1="100%" x2="0%" y2="0%">
-                            <stop offset="0%" stopColor="#FFFFFF" />
-                            <stop offset="100%" stopColor="#EDEDED" />
-                        </linearGradient>
-                    </defs>
-                    <path
-                        d="M -150 150 L 250 150 L 56 44 Q 50 40 44 44 Z"
-                        fill="url(#gradBottom)"
-                        filter="url(#ptBottom)"
-                        stroke="rgba(255,255,255,0.8)"
-                        strokeWidth="0.4"
-                        strokeLinejoin="round"
-                    />
-                </svg>
+                <div className="absolute inset-0 w-full h-full" style={{ filter: shadowBottom, transform: "translateZ(0)" }}>
+                    <svg
+                        className="absolute inset-0 w-full h-full"
+                        viewBox="0 0 100 100"
+                        preserveAspectRatio="none"
+                        overflow="visible"
+                    >
+                        <defs>
+                            <linearGradient id="gradBottom" x1="0%" y1="100%" x2="0%" y2="0%">
+                                <stop offset="0%" stopColor="#FFFFFF" />
+                                <stop offset="100%" stopColor="#EDEDED" />
+                            </linearGradient>
+                        </defs>
+                        <path
+                            d="M -150 150 L 250 150 L 56 44 Q 50 40 44 44 Z"
+                            fill="url(#gradBottom)"
+                            stroke="rgba(255,255,255,0.8)"
+                            strokeWidth="0.4"
+                            strokeLinejoin="round"
+                        />
+                    </svg>
+                </div>
             </div>
 
             {/* ── Top flap (3D open → reveals page) ── */}
@@ -237,37 +217,38 @@ export function EnvelopeAnimation() {
                 style={{ perspective: "1200px" }}
             >
                 <div
-                    className={`absolute inset-0 ${isPostSeal ? "envelope-flap-open" : ""}`}
+                    className={`absolute inset-0 ${isPostSeal ? "envelope-flap-open" : ""} ${phase === "separating" ? "hidden" : ""}`}
                     style={{
                         transformOrigin: "top center",
-                        backfaceVisibility: "hidden"
+                        backfaceVisibility: "hidden",
+                        WebkitBackfaceVisibility: "hidden"
                     }}
                     onAnimationEnd={
                         phase === "opening" ? handleFlapEnd : undefined
                     }
                 >
-                    <svg
-                        className="absolute inset-0 w-full h-full pointer-events-auto"
-                        viewBox="0 0 100 100"
-                        preserveAspectRatio="none"
-                        overflow="visible"
-                    >
-                        <defs>
-                            <PaperShadowDef id="ptTop" dx1={0} dy1={4} sd1={7} a1={0.18} dx2={0} dy2={1} sd2={3} a2={0.12} />
-                            <linearGradient id="gradTop" x1="0%" y1="0%" x2="0%" y2="100%">
-                                <stop offset="0%" stopColor="#E0D0DE" />
-                                <stop offset="100%" stopColor="#C0B0BE" />
-                            </linearGradient>
-                        </defs>
-                        <path
-                            d="M -150 -50 L 250 -50 L 56 56 Q 50 60 44 56 Z"
-                            fill="url(#gradTop)"
-                            filter="url(#ptTop)"
-                            stroke="rgba(228, 220, 223, 0.77)"
-                            strokeWidth="0.4"
-                            strokeLinejoin="round"
-                        />
-                    </svg>
+                    <div className="absolute inset-0 w-full h-full pointer-events-auto" style={{ filter: shadowTop }}>
+                        <svg
+                            className="absolute inset-0 w-full h-full"
+                            viewBox="0 0 100 100"
+                            preserveAspectRatio="none"
+                            overflow="visible"
+                        >
+                            <defs>
+                                <linearGradient id="gradTop" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stopColor="#E0D0DE" />
+                                    <stop offset="100%" stopColor="#C0B0BE" />
+                                </linearGradient>
+                            </defs>
+                            <path
+                                d="M -150 -50 L 250  -50 L 56 56 Q 50 60 44 56 Z"
+                                fill="url(#gradTop)"
+                                stroke="rgba(228, 220, 223, 0.77)"
+                                strokeWidth="0.4"
+                                strokeLinejoin="round"
+                            />
+                        </svg>
+                    </div>
                 </div>
             </div>
 
@@ -283,7 +264,7 @@ export function EnvelopeAnimation() {
                     <img
                         src="/images/seal.webp"
                         alt="Seal"
-                        className="w-[200px] h-[200px] object-contain pointer-events-none"
+                        className="w-[200px] h-[200px] object-contain pointer-events-none relative z-[11]"
                         style={{ filter: "drop-shadow(0 8px 16px rgba(60, 45, 35, 0.45)) drop-shadow(0 3px 6px rgba(60, 45, 35, 0.3))" }}
                     />
                 </div>
@@ -295,7 +276,7 @@ export function EnvelopeAnimation() {
                     } ${isPostSeal ? "envelope-part-fade" : ""}`}
             >
                 <p
-                    className="leading-none tracking-[0.18em]"
+                    className="leading-none tracking-[0.18em] relative z-[11]"
                     style={{
                         fontFamily: "var(--font-poiret-one), 'Poiret One', sans-serif",
                         fontSize: "clamp(1.5rem, 7vw, 2.2rem)",
@@ -306,7 +287,7 @@ export function EnvelopeAnimation() {
                     ВЫ
                 </p>
                 <p
-                    className="leading-none tracking-[0.18em] -mt-1 mb-0"
+                    className="leading-none tracking-[0.18em] -mt-1 mb-0 relative z-[11]"
                     style={{
                         fontFamily: "var(--font-poiret-one), 'Poiret One', sans-serif",
                         fontSize: "clamp(1.5rem, 7vw, 2.2rem)",
@@ -317,7 +298,7 @@ export function EnvelopeAnimation() {
                     ПРИГЛАШЕНЫ
                 </p>
                 <p
-                    className="-mt-3"
+                    className="-mt-3 relative z-[11]"
                     style={{
                         fontFamily: "'Kindentosca', cursive",
                         fontSize: "clamp(3rem, 15vw, 5rem)",
