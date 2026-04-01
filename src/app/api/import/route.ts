@@ -60,8 +60,9 @@ export async function POST(request: NextRequest) {
                                 householdId: household._id
                             });
                             results.guestsCreated++;
-                        } catch (guestErr: any) {
-                            results.errors.push(`Error creating guest ${guestData.guestName}: ${guestErr.message}`);
+                        } catch (guestErr: unknown) {
+                            const message = guestErr instanceof Error ? guestErr.message : 'Unknown error';
+                            results.errors.push(`Error creating guest ${guestData.guestName}: ${message}`);
                         }
                     }
                 } else if (item.guestName) {
@@ -74,8 +75,12 @@ export async function POST(request: NextRequest) {
                 } else {
                     results.errors.push(`Invalid item format: ${JSON.stringify(item)}`);
                 }
-            } catch (err: any) {
-                results.errors.push(`Processing error: ${err.message}${err.errors ? ' - ' + JSON.stringify(err.errors) : ''}`);
+            } catch (err: unknown) {
+                const message = err instanceof Error ? err.message : 'Unknown error';
+                const errors = (err && typeof err === 'object' && 'errors' in err) 
+                    ? ' - ' + JSON.stringify(err.errors) 
+                    : '';
+                results.errors.push(`Processing error: ${message}${errors}`);
             }
         }
 
@@ -84,8 +89,8 @@ export async function POST(request: NextRequest) {
             ...results
         }, { status: 201 });
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error('Import API error:', error);
-        return NextResponse.json({ error: error.message || 'Internal Server Error' }, { status: 500 });
+        return NextResponse.json({ error: error instanceof Error ? error.message : 'Internal Server Error' }, { status: 500 });
     }
 }

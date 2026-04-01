@@ -8,14 +8,18 @@ export function CalendarSection() {
     const [isIOS, setIsIOS] = useState(false);
 
     useEffect(() => {
-        setIsIOS(/iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream);
+        const checkIOS = () => {
+            const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent) && !((window as unknown as { MSStream?: boolean }).MSStream);
+            setIsIOS(isIOSDevice);
+        };
+        setTimeout(checkIOS, 0);
     }, []);
 
     const handleAddToCalendar = () => {
-        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+        const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent) && !((window as unknown as { MSStream?: boolean }).MSStream);
         const isMac = navigator.userAgent.includes('Macintosh');
 
-        if (isIOS || isMac) {
+        if (isIOSDevice || isMac) {
             handleAppleCalendar();
         } else {
             handleGoogleCalendar();

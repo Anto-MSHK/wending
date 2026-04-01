@@ -25,7 +25,7 @@ export function EnvelopeAnimation() {
     useEffect(() => {
         const mq = window.matchMedia("(max-width: 767px)");
         if (!mq.matches) {
-            setPhase("done");
+            setTimeout(() => setPhase("done"), 0);
             return;
         }
 

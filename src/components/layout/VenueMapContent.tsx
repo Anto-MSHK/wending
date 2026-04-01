@@ -23,7 +23,6 @@ const MapController = ({ center }: { center: L.LatLngExpression }) => {
         let target = center;
         if (typeof window !== 'undefined' && window.innerWidth < 768) {
             if (Array.isArray(center)) {
-                // @ts-ignore
                 target = [center[0] - 0.002, center[1]];
             }
         }
@@ -98,7 +97,6 @@ const VenueMapContent: React.FC<VenueMapContentProps> = ({ activeVenueIndex }) =
 
                 {/* Markers - hidden when path overlay shows heart */}
                 {VENUE_COORDS.map((pos, idx) => (
-                    /* @ts-ignore */
                     <Marker
                         key={idx}
                         position={pos as L.LatLngExpression}
